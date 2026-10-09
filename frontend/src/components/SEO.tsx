@@ -6,13 +6,13 @@ interface SEOProps {
   path?: string;
 }
 
-const SITE = "https://akrivon-ai.web.app";
-const DEFAULT_TITLE = "Akrivon AI — AI Red-Teaming & Security Assessments";
+const SITE = "https://knowyourai.live";
+const DEFAULT_TITLE = "KnowYourAI — Know what your AI does, live";
 const DEFAULT_DESC =
-  "We find vulnerabilities in AI systems before attackers do. Expert adversarial testing for prompt injection, agent hijacking, data exfiltration, and behavioral drift.";
+  "Open-source tools, a testing and enforcement platform, and hands-on assessments for teams shipping AI agents. Backed by published security research on production AI systems.";
 
 export default function SEO({ title, description, path = "" }: SEOProps) {
-  const fullTitle = title ? `${title} | Akrivon AI` : DEFAULT_TITLE;
+  const fullTitle = title ? `${title} | KnowYourAI` : DEFAULT_TITLE;
   const desc = description || DEFAULT_DESC;
   const url = `${SITE}${path}`;
 

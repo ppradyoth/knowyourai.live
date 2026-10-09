@@ -4,14 +4,14 @@ import SEO from "../components/SEO";
 export default function Privacy() {
   return (
     <>
-      <SEO title="Privacy Policy" description="How Akrivon AI collects, uses, stores, and protects your data." path="/privacy" />
+      <SEO title="Privacy Policy" description="How KnowYourAI collects, uses, stores, and protects your data." path="/privacy" />
       <Section eyebrow="Legal" title="Privacy Policy" description="Last updated: June 2026" />
 
       <section className="section">
         <div style={{ maxWidth: "72ch", margin: "0 auto" }} className="prose-legal">
 
         <h2>1. Introduction</h2>
-        <p>This Privacy Policy describes how Akrivon AI ("Akrivon," "we," "us," or "our") collects, uses, discloses, and protects information when you use our website, services, tools, and APIs (collectively, the "Services"). By accessing or using the Services, you acknowledge that you have read and understood this Privacy Policy.</p>
+        <p>This Privacy Policy describes how KnowYourAI, the independent project that operates knowyourai.live ("KnowYourAI," "we," "us," or "our") collects, uses, discloses, and protects information when you use our website, services, tools, and APIs (collectively, the "Services"). By accessing or using the Services, you acknowledge that you have read and understood this Privacy Policy.</p>
 
         <h2>2. Information We Collect</h2>
 

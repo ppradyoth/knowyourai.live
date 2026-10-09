@@ -8,7 +8,7 @@ export default function TermsPage() {
 
       <section className="panel prose">
         <p>
-          By using AkrivonAI, you agree to use the platform in compliance with applicable laws and your
+          By using KnowYourAI, you agree to use the platform in compliance with applicable laws and your
           organization policies. You are responsible for the target systems and data submitted for testing.
         </p>
       </section>

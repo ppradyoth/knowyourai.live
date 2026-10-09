@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
+import GoogleSignIn from "../components/GoogleSignIn";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -31,6 +32,7 @@ export default function Signup() {
           <h2>Create account</h2>
           <p className="panel-subtitle">Start red-teaming your AI systems</p>
         </div>
+        <GoogleSignIn label="Sign up with Google" />
         <form onSubmit={handleSubmit} className="form-stack">
           <div className="field">
             <label>Email</label>

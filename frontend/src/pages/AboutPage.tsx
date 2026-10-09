@@ -8,7 +8,7 @@ export default function AboutPage() {
 
       <section className="panel prose">
         <p>
-          AkrivonAI was built to solve one core problem: AI systems can gradually drift beyond their intended role.
+          KnowYourAI was built to solve one core problem: AI systems can gradually drift beyond their intended role.
           Our mission is to give product and risk teams a fast, clear way to detect that drift early.
         </p>
       </section>

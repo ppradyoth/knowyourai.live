@@ -11,8 +11,6 @@ const About = lazy(() => import("./pages/About"));
 const Architecture = lazy(() => import("./pages/Architecture"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
-const Careers = lazy(() => import("./pages/Careers"));
-const Changelog = lazy(() => import("./pages/Changelog"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Cookies = lazy(() => import("./pages/Cookies"));
 const Account = lazy(() => import("./pages/Account"));
@@ -36,10 +34,10 @@ const ScanHistory = lazy(() => import("./pages/ScanHistory"));
 const Security = lazy(() => import("./pages/Security"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Terms = lazy(() => import("./pages/Terms"));
-const Trust = lazy(() => import("./pages/Trust"));
+const Tools = lazy(() => import("./pages/Tools"));
 const UseCases = lazy(() => import("./pages/UseCases"));
 const Why = lazy(() => import("./pages/Why"));
-const WhyAkrivon = lazy(() => import("./pages/WhyAkrivon"));
+const WhyKnowYourAI = lazy(() => import("./pages/WhyKnowYourAI"));
 const WhatsUnique = lazy(() => import("./pages/WhatsUnique"));
 
 export default function App() {
@@ -48,12 +46,14 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="tools" element={<Tools />} />
           <Route path="product" element={<Product />} />
           <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="use-cases" element={<UseCases />} />
           <Route path="pricing" element={<Pricing />} />
           <Route path="why" element={<Why />} />
-          <Route path="why-akrivon" element={<WhyAkrivon />} />
+          <Route path="why-knowyourai" element={<WhyKnowYourAI />} />
+          <Route path="why-akrivon" element={<Navigate to="/why-knowyourai" replace />} />
           <Route path="whats-unique" element={<WhatsUnique />} />
           <Route path="services" element={<Services />} />
           <Route path="request" element={<RequestAssessment />} />
@@ -71,7 +71,7 @@ export default function App() {
           <Route path="demo" element={<Navigate to="/intentscan" replace />} />
 
           <Route path="security" element={<Security />} />
-          <Route path="trust" element={<Trust />} />
+          <Route path="trust" element={<Navigate to="/security" replace />} />
           <Route path="ethics" element={<Ethics />} />
 
           <Route path="docs" element={<Docs />} />
@@ -79,13 +79,13 @@ export default function App() {
           <Route path="research" element={<Research />} />
 
           <Route path="about" element={<About />} />
-          <Route path="careers" element={<Careers />} />
+          <Route path="careers" element={<Navigate to="/about" replace />} />
           <Route path="contact" element={<Contact />} />
 
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="case-studies" element={<CaseStudies />} />
-          <Route path="changelog" element={<Changelog />} />
+          <Route path="changelog" element={<Navigate to="/tools" replace />} />
 
           <Route path="terms" element={<Terms />} />
           <Route path="privacy" element={<Privacy />} />

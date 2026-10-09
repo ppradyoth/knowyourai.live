@@ -1,115 +1,126 @@
-import { useState, useRef, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
-type NavItem = {
-  to: string;
-  label: string;
-  children?: { to: string; label: string }[];
-};
+type NavGroup = { label: string; to: string; children: { to: string; label: string; hint: string }[] };
 
-const navItems: NavItem[] = [
-  { to: "/services", label: "Services" },
-  { to: "/case-studies", label: "Our Work" },
-  { to: "/product", label: "Platform", children: [
-    { to: "/product", label: "Overview" },
-    { to: "/intentscan", label: "IntentScan" },
-    { to: "/enforce", label: "IntentEnforce" },
-    { to: "/how-it-works", label: "How It Works" },
-    { to: "/docs", label: "API Docs" },
+const groups: NavGroup[] = [
+  { label: "For developers", to: "/tools", children: [
+    { to: "/tools", label: "Tools", hint: "Open-source scanners, benchmarks and labs" },
+    { to: "/intentscan", label: "IntentScan", hint: "Probe a live endpoint for violations" },
+    { to: "/enforce", label: "IntentEnforce", hint: "Intent policy in front of your model" },
+    { to: "/docs", label: "API docs", hint: "Connect your endpoint" },
   ]},
-  { to: "/pricing", label: "Pricing" },
-  { to: "/blog", label: "Blog" },
+  { label: "For teams", to: "/services", children: [
+    { to: "/services", label: "Assessments", hint: "Hands-on adversarial testing" },
+    { to: "/how-it-works", label: "How it works", hint: "From scope to findings report" },
+    { to: "/request", label: "Request an assessment", hint: "Tell us about your system" },
+  ]},
+  { label: "Research", to: "/case-studies", children: [
+    { to: "/case-studies", label: "Case studies", hint: "Findings in production AI systems" },
+    { to: "/research", label: "Publications & open source", hint: "Papers and upstream fixes" },
+    { to: "/blog", label: "Blog", hint: "Notes on AI security" },
+  ]},
 ];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [dropdown, setDropdown] = useState<string | null>(null);
   const { user, loading } = useAuth();
-  const close = () => { setIsOpen(false); setDropdown(null); };
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const { pathname } = useLocation();
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [theme, setTheme] = useState(() => document.documentElement.dataset.theme === "light" ? "light" : "dark");
+
+  useEffect(() => { setOpen(false); }, [pathname]);
 
   useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setDropdown(null);
-      }
-    };
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const onMove = (e: PointerEvent) => {
+      document.documentElement.style.setProperty("--mx", `${e.clientX}px`);
+      document.documentElement.style.setProperty("--my", `${e.clientY}px`);
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  const toggleTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("theme", next); } catch {}
+    setTheme(next);
+  };
+  const groupActive = (group: NavGroup) => group.children.some((child) => pathname === child.to || pathname.startsWith(`${child.to}/`));
+
   return (
-    <header className="navbar-wrap">
-      <div className="container navbar">
-        <NavLink to="/" className="brand-link" end onClick={close}>
-          <span className="brand-icon" aria-hidden="true">AK</span>
-          <span className="brand-text">Akrivon</span>
-        </NavLink>
+    <header className="kn-header" data-solid={scrolled || open}>
+      <div className="kn-spotlight" aria-hidden="true" />
+      <div className="kn-progress" aria-hidden="true" />
+      <div className="kn-nav">
+        <Link to="/" className="kn-brand" aria-label="KnowYourAI home">
+          <span className="kn-wordmark">knowyour<span>ai</span></span>
+          <span className="kn-live">live</span>
+        </Link>
 
-        <button
-          className="nav-toggle"
-          aria-label={isOpen ? "Close menu" : "Open menu"}
-          aria-expanded={isOpen}
-          aria-controls="primary-nav"
-          onClick={() => setIsOpen((o) => !o)}
-        >
-          {isOpen ? "✕" : "☰"}
-        </button>
-
-        <nav id="primary-nav" className={`nav-links${isOpen ? " nav-open" : ""}`} aria-label="Primary">
-          {navItems.map((item) =>
-            item.children ? (
-              <div key={item.to} className="nav-dropdown-wrap" ref={dropdownRef}>
-                <button
-                  className={`nav-link nav-dropdown-trigger${dropdown === item.to ? " active" : ""}`}
-                  onClick={(e) => { e.stopPropagation(); setDropdown(dropdown === item.to ? null : item.to); }}
-                  aria-expanded={dropdown === item.to}
-                >
-                  {item.label} <span className="nav-caret">▾</span>
-                </button>
-                {dropdown === item.to && (
-                  <div className="nav-dropdown">
-                    {item.children.map((child) => (
-                      <NavLink
-                        key={child.to}
-                        to={child.to}
-                        className="nav-dropdown-item"
-                        onClick={close}
-                      >
-                        {child.label}
-                      </NavLink>
-                    ))}
-                  </div>
-                )}
+        <nav className="kn-links" aria-label="Primary">
+          {groups.map((group) => (
+            <div key={group.label} className="kn-item">
+              <Link to={group.to} className={`kn-link${groupActive(group) ? " active" : ""}`} aria-haspopup="true">
+                {group.label} <span className="kn-caret" aria-hidden="true">▾</span>
+              </Link>
+              <div className="kn-menu">
+                {group.children.map((child) => (
+                  <Link key={child.to} to={child.to}>{child.label}<span>{child.hint}</span></Link>
+                ))}
               </div>
-            ) : (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}
-                onClick={close}
-              >
-                {item.label}
-              </NavLink>
-            )
-          )}
-          <div className="nav-cta-group">
-            {!loading && !user && (
-              <NavLink to="/login" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} onClick={close}>
-                Log in
-              </NavLink>
-            )}
-            <NavLink to="/request" className={({ isActive }) => "nav-link nav-link-cta" + (isActive ? " active" : "")} onClick={close}>
-              Request Assessment
-            </NavLink>
-            {!loading && user && (
-              <NavLink to="/dashboard" className={({ isActive }) => "nav-link nav-link-cta" + (isActive ? " active" : "")} onClick={close}>
-                Dashboard
-              </NavLink>
-            )}
-          </div>
+            </div>
+          ))}
+          <NavLink to="/pricing" className={({ isActive }) => `kn-link${isActive ? " active" : ""}`}>Pricing</NavLink>
         </nav>
+
+        <div className="kn-actions">
+          <button type="button" className="theme-toggle" onClick={toggleTheme} aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}>
+            {theme === "dark" ? (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+              </svg>
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></svg>
+            )}
+          </button>
+          {!loading && !user && <Link to="/login" className="kn-link">Log in</Link>}
+          {!loading && (user
+            ? <Link to="/dashboard" className="kn-cta">Dashboard</Link>
+            : <Link to="/signup" className="kn-cta">Start free</Link>)}
+          <button type="button" className="kn-burger" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="kn-mobile" onClick={() => setOpen((o) => !o)}>
+            <span /><span />
+          </button>
+        </div>
+      </div>
+
+      <div id="kn-mobile" className="kn-mobile" data-open={open}>
+        {groups.map((group) => (
+          <div key={group.label}>
+            <p className="kn-mobile-group">{group.label}</p>
+            {group.children.map((child) => <Link key={child.to} to={child.to}>{child.label}<span aria-hidden="true">→</span></Link>)}
+          </div>
+        ))}
+        <p className="kn-mobile-group">Account</p>
+        <Link to="/pricing">Pricing<span aria-hidden="true">→</span></Link>
+        {user
+          ? <Link to="/dashboard">Dashboard<span aria-hidden="true">→</span></Link>
+          : <><Link to="/login">Log in<span aria-hidden="true">→</span></Link><Link to="/signup">Start free<span aria-hidden="true">→</span></Link></>}
       </div>
     </header>
   );

@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import re
 
-from app.gemini_client import llm
+from app.llm import llm
 
 _DEFAULT_CATEGORIES = [
     {"name": "general_coding", "description": "questions about software development, architecture, design patterns, debugging"},

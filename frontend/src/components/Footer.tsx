@@ -2,45 +2,43 @@ import { Link } from "react-router-dom";
 
 const footerGroups = [
   {
-    title: "Product",
+    title: "For developers",
     links: [
-      { to: "/product", label: "Product" },
+      { to: "/tools", label: "Open-source tools" },
+      { to: "/product", label: "Platform" },
+      { to: "/intentscan", label: "IntentScan" },
+      { to: "/enforce", label: "IntentEnforce" },
+      { to: "/docs", label: "Docs" },
+      { to: "/architecture", label: "Architecture" },
+    ],
+  },
+  {
+    title: "For teams",
+    links: [
+      { to: "/services", label: "Assessments" },
       { to: "/how-it-works", label: "How It Works" },
       { to: "/use-cases", label: "Use Cases" },
-      { to: "/pricing", label: "Pricing" },
-      { to: "/why", label: "Why" },
-      { to: "/enforce", label: "Enforce" },
-      { to: "/intentscan", label: "Intent Scan" },
+      { to: "/request", label: "Request an assessment" },
+    ],
+  },
+  {
+    title: "Research",
+    links: [
+      { to: "/case-studies", label: "Case Studies" },
+      { to: "/research", label: "Publications" },
+      { to: "/blog", label: "Blog" },
     ],
   },
   {
     title: "Company",
     links: [
       { to: "/about", label: "About" },
-      { to: "/careers", label: "Careers" },
       { to: "/contact", label: "Contact" },
-      { to: "/trust", label: "Trust" },
       { to: "/security", label: "Security" },
-    ],
-  },
-  {
-    title: "Resources",
-    links: [
-      { to: "/docs", label: "Docs" },
-      { to: "/architecture", label: "Architecture" },
-      { to: "/research", label: "Research" },
-      { to: "/blog", label: "Blog" },
-      { to: "/case-studies", label: "Case Studies" },
-      { to: "/changelog", label: "Changelog" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
+      { to: "/ethics", label: "Ethics" },
       { to: "/terms", label: "Terms" },
       { to: "/privacy", label: "Privacy" },
       { to: "/cookies", label: "Cookies" },
-      { to: "/ethics", label: "Ethics" },
     ],
   },
 ];
@@ -65,7 +63,7 @@ export default function Footer() {
         ))}
       </div>
       <div className="container footer-meta">
-        <p>© {new Date().getFullYear()} Akrivon AI. Behavior QA for enterprise AI systems.</p>
+        <p>© {new Date().getFullYear()} KnowYourAI. Know what your AI does, live.</p>
       </div>
     </footer>
   );

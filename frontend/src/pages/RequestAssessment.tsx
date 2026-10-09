@@ -30,7 +30,7 @@ export default function RequestAssessment() {
       });
       setSubmitted(true);
     } catch {
-      setError("Something went wrong. Please email us directly at ppradyoth64@gmail.com");
+      setError("Something went wrong. Please try again in a few minutes.");
     } finally {
       setLoading(false);
     }
@@ -91,7 +91,7 @@ export default function RequestAssessment() {
             </div>
             <div className="field">
               <label>Which service are you interested in?</label>
-              <select name="service" required style={{ appearance: "auto", padding: "11px 12px", border: "1px solid #d1d5db", borderRadius: 10, background: "#fff", color: "var(--text)", fontSize: "1rem", width: "100%" }}>
+              <select name="service" required style={{ appearance: "auto", padding: "11px 12px", border: "1px solid var(--border)", borderRadius: 10, background: "var(--surface)", color: "var(--text)", fontSize: "1rem", width: "100%" }}>
                 <option value="">Select one</option>
                 <option value="AI Red-Team Assessment">AI Red-Team Assessment</option>
                 <option value="Document & RAG Injection Audit">Document & RAG Injection Audit</option>
@@ -101,7 +101,7 @@ export default function RequestAssessment() {
             </div>
             <div className="field">
               <label>Timeline</label>
-              <select name="timeline" style={{ appearance: "auto", padding: "11px 12px", border: "1px solid #d1d5db", borderRadius: 10, background: "#fff", color: "var(--text)", fontSize: "1rem", width: "100%" }}>
+              <select name="timeline" style={{ appearance: "auto", padding: "11px 12px", border: "1px solid var(--border)", borderRadius: 10, background: "var(--surface)", color: "var(--text)", fontSize: "1rem", width: "100%" }}>
                 <option value="">Select one</option>
                 <option value="ASAP">ASAP — we're launching soon</option>
                 <option value="Within the next month">Within the next month</option>

@@ -4,7 +4,7 @@ export default function Why() {
   return (
     <>
       <Section
-        eyebrow="Why Akrivon"
+        eyebrow="Why KnowYourAI"
         title="AI doesn't break the way you think."
         description="Most AI systems don't fail because of attacks. They fail because they quietly stop behaving as intended."
         className="why-hero"
@@ -75,10 +75,10 @@ export default function Why() {
         </div>
       </Section>
 
-      <Section title="Akrivon ensures your AI behaves as intended." className="why-body">
+      <Section title="KnowYourAI ensures your AI behaves as intended." className="why-body">
         <div className="why-story">
           <p>
-            Akrivon uses use-case-driven testing to evaluate real behavior against declared scope. It validates boundaries,
+            KnowYourAI uses use-case-driven testing to evaluate real behavior against declared scope. It validates boundaries,
             identifies where drift has started, and turns ambiguous risk into structured evidence.
           </p>
           <p>

@@ -4,7 +4,7 @@ import SEO from "../components/SEO";
 export default function Cookies() {
   return (
     <>
-      <SEO title="Cookie Policy" description="How Akrivon AI uses cookies and similar technologies on its website and services." path="/cookies" />
+      <SEO title="Cookie Policy" description="How KnowYourAI uses cookies and similar technologies on its website and services." path="/cookies" />
       <Section eyebrow="Legal" title="Cookie Policy" description="Last updated: June 2026" />
 
       <section className="section">
@@ -14,7 +14,7 @@ export default function Cookies() {
         <p>Cookies are small text files placed on your device when you visit a website. They are widely used to make websites work efficiently and to provide information to site operators. Similar technologies include local storage, session storage, and pixel tags.</p>
 
         <h2>2. How We Use Cookies</h2>
-        <p>Akrivon AI ("Akrivon," "we," "us," or "our") uses cookies and similar technologies on our website and services for the following purposes:</p>
+        <p>KnowYourAI, the independent project that operates knowyourai.live ("KnowYourAI," "we," "us," or "our") uses cookies and similar technologies on our website and services for the following purposes:</p>
 
         <h3>2.1 Strictly Necessary Cookies</h3>
         <p>These cookies are essential for the operation of our Services. They include:</p>

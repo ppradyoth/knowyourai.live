@@ -59,7 +59,7 @@ export default function Demo() {
         <div className="workspace-grid" aria-label="Scan workspace">
           <ConfigForm onSubmit={handleRunScan} loading={loading} />
           {status && (
-            <div style={{ padding: "1rem", background: "var(--clr-surface, #1a1a2e)", borderRadius: 8, marginBottom: "1rem", textAlign: "center", color: "var(--clr-accent, #00d4aa)" }}>
+            <div style={{ padding: "1rem", background: "var(--clr-surface, var(--text))", borderRadius: 8, marginBottom: "1rem", textAlign: "center", color: "var(--clr-accent, #00d4aa)" }}>
               {status}
             </div>
           )}

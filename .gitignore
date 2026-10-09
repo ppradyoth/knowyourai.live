@@ -33,3 +33,10 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# Old project config backup
+frontend/.env.production.akrivon
+
+# Local data and tooling
+*.duckdb
+.claude/settings.local.json

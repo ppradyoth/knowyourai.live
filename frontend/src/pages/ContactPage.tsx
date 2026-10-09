@@ -3,7 +3,7 @@ export default function ContactPage() {
     <div className="page-stack">
       <section className="panel soft-panel">
         <p className="eyebrow">Contact</p>
-        <h1>Talk with the AkrivonAI team.</h1>
+        <h1>Talk with the KnowYourAI team.</h1>
       </section>
 
       <section className="panel prose">

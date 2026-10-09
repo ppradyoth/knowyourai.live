@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "akrivon-ai"
+    "default": "knowyourai-platform",
+    "akrivon": "akrivon-ai"
   }
 }

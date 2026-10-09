@@ -100,7 +100,7 @@ export default function HowItWorks() {
           </p>
         </div>
 
-        <div className="flow-diagram" style={{ marginTop: "20px" }} role="img" aria-label="Akrivon workflow">
+        <div className="flow-diagram" style={{ marginTop: "20px" }} role="img" aria-label="KnowYourAI workflow">
           <div>Define intent</div>
           <span>→</span>
           <div>IntentScan: probe &amp; detect</div>

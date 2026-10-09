@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Card from "../components/Card";
 import Section from "../components/Section";
 
-export default function WhyAkrivon() {
+export default function WhyKnowYourAI() {
   return (
     <>
       {/* Hero */}
@@ -56,7 +56,7 @@ export default function WhyAkrivon() {
       {/* Solution */}
       <Section
         eyebrow="The Solution"
-        title="Akrivon: systematic AI boundary testing"
+        title="KnowYourAI: systematic AI boundary testing"
         description="Catch drift before production. Enforce boundaries at runtime."
         className="why-body"
       >
@@ -83,7 +83,7 @@ export default function WhyAkrivon() {
       </Section>
 
       {/* Comparison table */}
-      <Section eyebrow="The Difference" title="What sets Akrivon apart" className="why-body">
+      <Section eyebrow="The Difference" title="What sets KnowYourAI apart" className="why-body">
         <div className="comparison-table-wrap">
           <table className="comparison-table">
             <thead>
@@ -91,7 +91,7 @@ export default function WhyAkrivon() {
                 <th>Capability</th>
                 <th>Manual testing</th>
                 <th>Monitoring only</th>
-                <th>Akrivon</th>
+                <th>KnowYourAI</th>
               </tr>
             </thead>
             <tbody>
@@ -163,7 +163,7 @@ export default function WhyAkrivon() {
       <Section
         eyebrow="Next Step"
         title="See it in action"
-        description="Try Akrivon on your own API in minutes."
+        description="Try KnowYourAI on your own API in minutes."
         className="why-closing"
       >
         <div className="hero-actions">

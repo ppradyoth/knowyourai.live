@@ -8,6 +8,7 @@ from .auth import get_current_user
 from .db import _get_db
 
 PLAN_LIMITS = {
+    "free": {"rpm": 10, "monthly_tests": 1_000},
     "starter": {"rpm": 10, "monthly_tests": 1_000},
     "growth": {"rpm": 60, "monthly_tests": 20_000},
     "enterprise": {"rpm": 300, "monthly_tests": 500_000},
@@ -19,10 +20,10 @@ def _get_user_plan(uid: str) -> dict:
     doc = db.collection("users").document(uid).get()
     if doc.exists:
         data = doc.to_dict()
-        plan = data.get("plan", "starter")
+        plan = data.get("plan", "free")
     else:
-        plan = "starter"
-    return PLAN_LIMITS.get(plan, PLAN_LIMITS["starter"])
+        plan = "free"
+    return PLAN_LIMITS.get(plan, PLAN_LIMITS["free"])
 
 
 def _get_monthly_usage(uid: str) -> int:
@@ -76,7 +77,7 @@ async def check_scan_quota(user: dict = Depends(get_current_user)) -> dict:
     usage = _get_monthly_usage(uid)
 
     if usage >= limits["monthly_tests"]:
-        raise HTTPException(status_code=402, detail=f"Monthly test quota exceeded ({usage}/{limits['monthly_tests']}). Upgrade your plan.")
+        raise HTTPException(status_code=402, detail=f"Monthly test quota reached ({usage}/{limits['monthly_tests']}). It resets on the 1st.")
 
     if not _check_rpm(uid, limits["rpm"]):
         raise HTTPException(status_code=429, detail="Rate limit exceeded. Try again in a minute.")
@@ -89,9 +90,9 @@ def get_usage(uid: str) -> dict:
     usage = _get_monthly_usage(uid)
     db = _get_db()
     doc = db.collection("users").document(uid).get()
-    plan = "starter"
+    plan = "free"
     if doc.exists:
-        plan = doc.to_dict().get("plan", "starter")
+        plan = doc.to_dict().get("plan", "free")
     return {
         "plan": plan,
         "monthly_tests_used": usage,

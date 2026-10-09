@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import asyncio
+import contextvars
 
 import httpx
 from fastapi import APIRouter, HTTPException, Request
 
 from intent_layer.engine import enforce
 from .db import get_layer, log_proxy_request
+from .llm import use_provider_key
 from .security import assert_safe_url
 
 router = APIRouter()
@@ -59,6 +61,8 @@ async def proxy_request(layer_id: str, request: Request):
     if not prompt:
         raise HTTPException(status_code=400, detail="No prompt found in request body")
 
+    use_provider_key(layer["uid"])
+
     target_url = layer.get("target_url", "")
     if target_url:
         assert_safe_url(target_url)
@@ -71,10 +75,12 @@ async def proxy_request(layer_id: str, request: Request):
             return "No target API configured for this layer."
         return _call_target(target_url, p)
 
+    ctx = contextvars.copy_context()
     loop = asyncio.get_event_loop()
     result = await loop.run_in_executor(
         None,
-        lambda: enforce(
+        lambda: ctx.run(
+            enforce,
             prompt=prompt,
             config={"allowed": [], "blocked": []},
             call_api=_proxy_call,

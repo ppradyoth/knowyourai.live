@@ -6,10 +6,10 @@ import SEO from "../components/SEO";
 export default function Product() {
   return (
     <>
-      <SEO title="Platform" description="Akrivon AI Behavior QA Platform — IntentScan for pre-production testing, IntentEnforce for runtime enforcement, and a full API for integration." path="/product" />
+      <SEO title="Platform" description="KnowYourAI Behavior QA Platform — IntentScan for pre-production testing, IntentEnforce for runtime enforcement, and a full API for integration." path="/product" />
       <Section
         eyebrow="Product"
-        title="Akrivon AI Behavior QA Platform"
+        title="KnowYourAI Behavior QA Platform"
         description="A complete validation layer for AI systems that must remain aligned to role, domain, and policy constraints."
       />
 
@@ -47,7 +47,7 @@ export default function Product() {
 
       <Section
         title="Intent Layer (Runtime Enforcement)"
-        description="Akrivon sits between users and AI systems to enforce behavior in production, not only during pre-release tests."
+        description="KnowYourAI sits between users and AI systems to enforce behavior in production, not only during pre-release tests."
       >
         <div className="card-grid three-col">
           <Card title="Runtime intent classification" description="Classify each incoming prompt before it reaches your model." />

@@ -4,14 +4,14 @@ import SEO from "../components/SEO";
 export default function Ethics() {
   return (
     <>
-      <SEO title="Responsible Disclosure & Ethics" description="Akrivon AI's principles for responsible AI security evaluation and ethical disclosure." path="/ethics" />
+      <SEO title="Responsible Disclosure & Ethics" description="KnowYourAI's principles for responsible AI security evaluation and ethical disclosure." path="/ethics" />
       <Section eyebrow="Ethics" title="Responsible Disclosure & Ethics Policy" description="Last updated: June 2026" />
 
       <section className="section">
         <div style={{ maxWidth: "72ch", margin: "0 auto" }} className="prose-legal">
 
         <h2>1. Our Principles</h2>
-        <p>Akrivon AI conducts AI security assessments and adversarial testing with a commitment to ethical practices, responsible disclosure, and the advancement of AI safety. Our work is guided by the following principles:</p>
+        <p>KnowYourAI conducts AI security assessments and adversarial testing with a commitment to ethical practices, responsible disclosure, and the advancement of AI safety. Our work is guided by the following principles:</p>
         <ul>
           <li><strong>Authorization first:</strong> We only test systems with explicit written authorization from the system owner or authorized representative</li>
           <li><strong>Proportionality:</strong> Our testing methods are proportionate to the engagement scope and designed to minimize unintended impact</li>
@@ -60,7 +60,7 @@ export default function Ethics() {
         </ul>
 
         <h2>6. Reporting Concerns</h2>
-        <p>If you believe that Akrivon or any individual acting on behalf of Akrivon has engaged in conduct inconsistent with these principles, please contact us through the information provided on our website.</p>
+        <p>If you believe that KnowYourAI or any individual acting on behalf of KnowYourAI has engaged in conduct inconsistent with these principles, please contact us through the information provided on our website.</p>
 
         </div>
       </section>

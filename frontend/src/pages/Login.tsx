@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
+import GoogleSignIn from "../components/GoogleSignIn";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -29,8 +30,9 @@ export default function Login() {
       <div className="panel">
         <div className="panel-header">
           <h2>Sign in</h2>
-          <p className="panel-subtitle">Access your Akrivon AI dashboard</p>
+          <p className="panel-subtitle">Access your KnowYourAI dashboard</p>
         </div>
+        <GoogleSignIn label="Continue with Google" />
         <form onSubmit={handleSubmit} className="form-stack">
           <div className="field">
             <label>Email</label>

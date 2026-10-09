@@ -14,12 +14,22 @@ from flask import Response
 from app.main import app as fastapi_app
 
 initialize_app()
-_wsgi = ASGIMiddleware(fastapi_app)
 
-GEMINI_API_KEY = SecretParam("GEMINI_API_KEY")
+# Built on first request, not at import: the adapter starts an event-loop thread,
+# and a thread started before the server forks its workers does not exist in them.
+_wsgi = None
 
 
-@https_fn.on_request(region="us-central1", secrets=[GEMINI_API_KEY])
+def _adapter():
+    global _wsgi
+    if _wsgi is None:
+        _wsgi = ASGIMiddleware(fastapi_app)
+    return _wsgi
+
+PROVIDER_KEY_MASTER = SecretParam("PROVIDER_KEY_MASTER")
+
+
+@https_fn.on_request(region="us-central1", secrets=[PROVIDER_KEY_MASTER], memory=1024, timeout_sec=540)
 def api(req: https_fn.Request) -> Response:
     # Firebase Hosting rewrites /api/** to this function but keeps the full
     # path (e.g. /api/scan). Strip the prefix so FastAPI routes match.
@@ -36,7 +46,7 @@ def api(req: https_fn.Request) -> Response:
         captured["status"] = int(status.split(" ", 1)[0])
         captured["headers"] = dict(headers)
 
-    for chunk in _wsgi(environ, start_response):
+    for chunk in _adapter()(environ, start_response):
         chunks.append(chunk if isinstance(chunk, bytes) else chunk.encode())
 
     return Response(

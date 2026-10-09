@@ -3,34 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0f172a" />
+    <meta name="theme-color" content="#0f0f0f" />
     <meta name="robots" content="index, follow" />
 
-    <title>Akrivon AI — AI Red-Teaming & Security Assessments</title>
-    <meta name="description" content="We find vulnerabilities in AI systems before attackers do. Expert adversarial testing for prompt injection, agent hijacking, data exfiltration, and behavioral drift." />
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          if (t !== "light" && t !== "dark") t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          document.documentElement.dataset.theme = t;
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
+    <title>KnowYourAI — Know what your AI does, live</title>
+    <meta name="description" content="Open-source tools, a testing and enforcement platform, and hands-on assessments for teams shipping AI agents. Backed by published security research on production AI systems." />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
     <link rel="preconnect" href="https://firebaseinstallations.googleapis.com" />
     <link rel="preconnect" href="https://firestore.googleapis.com" />
 
-    <meta property="og:title" content="Akrivon AI — AI Red-Teaming & Security Assessments" />
-    <meta property="og:description" content="We find vulnerabilities in AI systems before attackers do. Expert adversarial testing for prompt injection, agent hijacking, data exfiltration, and behavioral drift." />
+    <meta property="og:title" content="KnowYourAI — Know what your AI does, live" />
+    <meta property="og:description" content="Open-source tools, a testing and enforcement platform, and hands-on assessments for teams shipping AI agents. Backed by published security research on production AI systems." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://akrivon-ai.web.app" />
-    <meta property="og:site_name" content="Akrivon AI" />
-    <meta property="og:image" content="https://akrivon-ai.web.app/og-image.png" />
+    <meta property="og:url" content="https://knowyourai.live" />
+    <meta property="og:site_name" content="KnowYourAI" />
+    <meta property="og:image" content="https://knowyourai.live/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
 
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Akrivon AI",
-      "url": "https://akrivon-ai.web.app",
-      "description": "AI red-teaming and security assessment firm. We find vulnerabilities in AI systems before attackers do.",
-      "foundingDate": "2025",
+      "name": "KnowYourAI",
+      "url": "https://knowyourai.live",
+      "description": "AI security tools, platform, and assessments for teams shipping AI agents.",
       "serviceType": ["AI Security Assessment", "AI Red-Teaming", "Prompt Injection Testing"],
       "areaServed": "Worldwide"
     }
@@ -39,8 +53,8 @@
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Akrivon AI",
-      "url": "https://akrivon-ai.web.app"
+      "name": "KnowYourAI",
+      "url": "https://knowyourai.live"
     }
     </script>
   </head>

@@ -7,4 +7,4 @@ Disallow: /layers
 Disallow: /enforce
 Disallow: /intentscan
 
-Sitemap: https://akrivon-ai.web.app/sitemap.xml
+Sitemap: https://knowyourai.live/sitemap.xml

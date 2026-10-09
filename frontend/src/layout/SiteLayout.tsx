@@ -24,7 +24,7 @@ export default function SiteLayout() {
             <span className="brand-mark" aria-hidden="true">
               AI
             </span>
-            <span>AkrivonAI</span>
+            <span>KnowYourAI</span>
           </NavLink>
         </div>
 
@@ -58,7 +58,7 @@ export default function SiteLayout() {
             </NavLink>
           ))}
         </div>
-        <p className="footer-note">© {new Date().getFullYear()} AkrivonAI. Boundary assurance for AI systems.</p>
+        <p className="footer-note">© {new Date().getFullYear()} KnowYourAI. Boundary assurance for AI systems.</p>
       </footer>
     </div>
   );

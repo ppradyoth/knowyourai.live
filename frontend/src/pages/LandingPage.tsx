@@ -7,7 +7,7 @@ export default function LandingPage() {
         <p className="eyebrow">AI Behavior QA Platform</p>
         <h1>Know when your AI crosses the line before your users do.</h1>
         <p className="hero-copy">
-          AkrivonAI stress-tests assistant behavior against your intended use case,
+          KnowYourAI stress-tests assistant behavior against your intended use case,
           highlights drift patterns, and gives your team a structured risk report in minutes.
         </p>
         <div className="hero-actions">

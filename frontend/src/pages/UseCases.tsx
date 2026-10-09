@@ -6,7 +6,7 @@ export default function UseCases() {
     <>
       <Section
         eyebrow="Use Cases"
-        title="Where Akrivon delivers immediate value"
+        title="Where KnowYourAI delivers immediate value"
         description="Behavior QA for regulated, customer-facing, and mission-critical AI experiences."
       />
 

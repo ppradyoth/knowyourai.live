@@ -7,7 +7,7 @@ export default function Architecture() {
       <Section
         eyebrow="Architecture"
         title="Composable architecture for AI behavior QA"
-        description="Akrivon separates configuration, scan execution, and violation analysis for reliability and extensibility."
+        description="KnowYourAI separates configuration, scan execution, and violation analysis for reliability and extensibility."
       />
 
       <Section title="System modules">

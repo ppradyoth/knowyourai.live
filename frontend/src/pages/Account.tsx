@@ -7,6 +7,18 @@ import { getUsage } from "../api";
 
 const BASE = import.meta.env.VITE_API_BASE ?? "/api";
 
+type Provider = "anthropic" | "gemini";
+const providerNames: Record<Provider, string> = { anthropic: "Claude", gemini: "Gemini" };
+const providerDefaults: Record<Provider, string> = { anthropic: "claude-opus-5-5", gemini: "gemini-2.0-flash" };
+
+interface ProviderKey {
+  configured: boolean;
+  provider?: Provider;
+  last4?: string;
+  model?: string;
+  updated_at?: string;
+}
+
 interface ApiKey {
   key_id: string;
   name: string;
@@ -23,6 +35,47 @@ export default function Account() {
   const [loading, setLoading] = useState(false);
   const [usage, setUsage] = useState<{ plan: string; monthly_tests_used: number; monthly_tests_limit: number } | null>(null);
 
+  const [providerKey, setProviderKey] = useState<ProviderKey | null>(null);
+  const [provider, setProvider] = useState<Provider>("anthropic");
+  const [geminiKey, setGeminiKey] = useState("");
+  const [geminiModel, setGeminiModel] = useState("");
+  const [providerSaving, setProviderSaving] = useState(false);
+  const [providerError, setProviderError] = useState("");
+
+  const fetchProviderKey = useCallback(async () => {
+    const token = await getToken();
+    if (!token) return;
+    const res = await fetch(`${BASE}/provider-key`, { headers: { Authorization: `Bearer ${token}` } });
+    if (res.ok) setProviderKey(await res.json());
+  }, [getToken]);
+
+  const saveProviderKey = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setProviderSaving(true);
+    setProviderError("");
+    const token = await getToken();
+    const res = await fetch(`${BASE}/provider-key`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ provider, api_key: geminiKey.trim(), model: geminiModel.trim() || null }),
+    });
+    if (res.ok) {
+      setProviderKey(await res.json());
+      setGeminiKey("");
+      setGeminiModel("");
+    } else {
+      const body = await res.json().catch(() => null);
+      setProviderError(typeof body?.detail === "string" ? body.detail : "Could not save the key.");
+    }
+    setProviderSaving(false);
+  };
+
+  const removeProviderKey = async () => {
+    const token = await getToken();
+    await fetch(`${BASE}/provider-key`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+    fetchProviderKey();
+  };
+
   const fetchKeys = useCallback(async () => {
     const token = await getToken();
     if (!token) return;
@@ -36,7 +89,7 @@ export default function Account() {
     try { setUsage(await getUsage(token)); } catch {}
   }, [getToken]);
 
-  useEffect(() => { fetchKeys(); fetchUsage(); }, [fetchKeys, fetchUsage]);
+  useEffect(() => { fetchKeys(); fetchUsage(); fetchProviderKey(); }, [fetchKeys, fetchUsage, fetchProviderKey]);
 
   const createKey = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,6 +149,59 @@ export default function Account() {
           </div>
         </div>
       )}
+
+      <div className="panel" style={{ marginBottom: 24 }}>
+        <div className="panel-header">
+          <h2>Model API key</h2>
+        </div>
+        <p style={{ color: "var(--muted)", marginBottom: 16, fontSize: "0.94rem", lineHeight: 1.6 }}>
+          IntentScan and IntentEnforce are free and run on your own Claude or Gemini key. The key is encrypted before it is
+          stored, is only used to run your scans and enforcement calls, and is never shown again after you save it.
+        </p>
+
+        {providerKey?.configured ? (
+          <div className="status-block status-success" style={{ marginBottom: 16 }}>
+            <p className="status-title">{providerNames[providerKey.provider ?? "gemini"]} key saved, ending in {providerKey.last4}</p>
+            <p style={{ marginTop: 4, fontSize: "0.88rem" }}>
+              Model: {providerKey.model}
+              {providerKey.updated_at && ` · updated ${new Date(providerKey.updated_at).toLocaleDateString()}`}
+            </p>
+            <button onClick={removeProviderKey} className="button-secondary" style={{ width: "auto", fontSize: "0.82rem", padding: "4px 12px", minHeight: "unset", marginTop: 8, color: "var(--danger)" }}>Remove key</button>
+          </div>
+        ) : (
+          <p style={{ marginBottom: 16, fontWeight: 600 }}>No key saved yet. Add one to run scans.</p>
+        )}
+
+        <form onSubmit={saveProviderKey} style={{ display: "grid", gap: 10 }}>
+          <div role="group" aria-label="Model provider" style={{ display: "flex", gap: 8 }}>
+            {(Object.keys(providerNames) as Provider[]).map((p) => (
+              <button key={p} type="button" aria-pressed={provider === p} onClick={() => setProvider(p)} className={provider === p ? "button-primary" : "button-secondary"} style={{ width: "auto", minHeight: 38, padding: "6px 16px" }}>{providerNames[p]}</button>
+            ))}
+          </div>
+          <input
+            type="password"
+            placeholder={`${providerNames[provider]} API key`}
+            value={geminiKey}
+            onChange={(e) => setGeminiKey(e.target.value)}
+            autoComplete="off"
+            required
+            minLength={20}
+            aria-label={`${providerNames[provider]} API key`}
+          />
+          <div style={{ display: "flex", gap: 10 }}>
+            <input
+              type="text"
+              placeholder={`Model (default ${providerDefaults[provider]})`}
+              value={geminiModel}
+              onChange={(e) => setGeminiModel(e.target.value)}
+              aria-label="Model"
+              style={{ flex: 1 }}
+            />
+            <button type="submit" disabled={providerSaving} style={{ width: "auto", whiteSpace: "nowrap" }}>{providerSaving ? "Checking…" : "Save key"}</button>
+          </div>
+          {providerError && <p style={{ color: "var(--danger)", fontSize: "0.9rem" }}>{providerError}</p>}
+        </form>
+      </div>
 
       <div className="panel" style={{ marginBottom: 24 }}>
         <div className="panel-header">

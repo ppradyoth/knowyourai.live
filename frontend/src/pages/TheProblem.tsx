@@ -160,9 +160,9 @@ export default function TheProblem() {
         </div>
       </Section>
 
-      {/* The Akrivon Approach */}
+      {/* The KnowYourAI Approach */}
       <Section
-        eyebrow="THE AKRIVON APPROACH"
+        eyebrow="THE KNOWYOURAI APPROACH"
         title="Introducing Intent-Level Security"
         description="Two complementary capabilities that red teaming, evals, and guardrails can't do together."
       >
@@ -223,7 +223,7 @@ export default function TheProblem() {
       <Section
         eyebrow="WHY THIS MATTERS"
         title="A New Category of AI Security"
-        description="Akrivon isn't better red teaming, evaluation, or guardrails. It's a different layer entirely."
+        description="KnowYourAI isn't better red teaming, evaluation, or guardrails. It's a different layer entirely."
       >
         <div className="mt-12 overflow-x-auto">
           <table className="w-full text-sm">
@@ -233,7 +233,7 @@ export default function TheProblem() {
                 <th className="text-left py-4 px-4 font-semibold">Red Teaming</th>
                 <th className="text-left py-4 px-4 font-semibold">Evals</th>
                 <th className="text-left py-4 px-4 font-semibold">Guardrails</th>
-                <th className="text-left py-4 px-4 font-semibold text-blue-600">Akrivon</th>
+                <th className="text-left py-4 px-4 font-semibold text-blue-600">KnowYourAI</th>
               </tr>
             </thead>
             <tbody>
@@ -301,7 +301,7 @@ export default function TheProblem() {
             <strong>Guardrails</strong> are reactive filters, not proactive decision control.
           </p>
           <p className="text-lg font-semibold text-blue-600">
-            Akrivon is the missing layer. Intent-level testing + enforcement before and after execution.
+            KnowYourAI is the missing layer. Intent-level testing + enforcement before and after execution.
           </p>
           <p className="text-base mt-8">
             The question isn't whether AI boundary violations will happen. They're happening right now. The question is whether you'll catch them in your lab or in a compliance audit.

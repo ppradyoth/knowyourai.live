@@ -6,13 +6,13 @@ export default function About() {
     <>
       <SEO
         title="About"
-        description="Akrivon AI is an AI red-teaming firm helping organizations build AI systems that remain aligned, safe, and accountable in production."
+        description="KnowYourAI builds open-source tools, a testing and enforcement platform, and runs assessments so teams know what their AI does in production."
         path="/about"
       />
       <Section
         eyebrow="About"
         title="Our mission is trustworthy AI behavior at scale"
-        description="Akrivon was founded to help organizations build AI systems that remain aligned, safe, and accountable in production."
+        description="KnowYourAI exists so that anyone shipping AI can know what it is, how it behaves under attack, and what it is doing right now."
       />
 
       <Section title="Vision" description="Every AI release should include measurable behavior assurance by default.">
@@ -22,21 +22,13 @@ export default function About() {
         </p>
       </Section>
 
-      <Section
-        eyebrow="THE TEAM"
-        title="Built by people who care about AI safety"
-        description="Our founders bring deep experience in AI systems, security, and enterprise software."
-      >
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="text-center">
-            <div className="w-24 h-24 mx-auto bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mb-4">
-              PA
-            </div>
-            <h3 className="text-lg font-semibold mb-1">Prad Pradyoth</h3>
-            <p className="text-sm text-gray-600 mb-3">Founder & CEO</p>
-            <p className="text-sm text-gray-700">AI infrastructure builder. Previously worked on LLM systems and boundary detection at scale.</p>
-          </div>
-        </div>
+      <Section title="Where we are" description="Stated plainly, because a security company should be.">
+        <ul className="list">
+          <li>Bootstrapped and independent. No outside funding and no revenue yet.</li>
+          <li>Open source first: the scanners, benchmarks and labs are public and free to use.</li>
+          <li>The hosted platform is free and runs on each user's own model key, so it costs nothing to try.</li>
+          <li>Built with Claude Code.</li>
+        </ul>
       </Section>
 
       <Section title="Why now?" description="">
@@ -48,10 +40,9 @@ export default function About() {
           </p>
           <p>
             We've seen the consequences: compliance violations, customer trust erosion, and costly incident response.
-            The tools to prevent this don't exist yet.
           </p>
           <p>
-            Akrivon was born to fill that gap. We're building the testing and enforcement layer that lets teams move
+            KnowYourAI was born to fill that gap. We're building the testing and enforcement layer that lets teams move
             fast <strong>and</strong> confidently.
           </p>
         </div>

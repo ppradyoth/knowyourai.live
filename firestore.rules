@@ -1,0 +1,17 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // The assessment form is the only thing the browser writes directly.
+    match /assessment_requests/{id} {
+      allow create: if request.resource.data.keys().hasAll(['name', 'email', 'company'])
+        && request.resource.data.name is string && request.resource.data.name.size() <= 200
+        && request.resource.data.email is string && request.resource.data.email.size() <= 320
+        && request.resource.data.company is string && request.resource.data.company.size() <= 200;
+    }
+    // Everything else (scans, layers, api_keys, provider_keys, usage) is reached
+    // only through the backend's admin SDK.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

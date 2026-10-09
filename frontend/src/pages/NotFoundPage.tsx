@@ -7,7 +7,7 @@ export default function NotFoundPage() {
       <h1>Page not found</h1>
       <p>The page you requested does not exist.</p>
       <p>
-        Return to the <Link to="/">AkrivonAI home page</Link>.
+        Return to the <Link to="/">KnowYourAI home page</Link>.
       </p>
     </section>
   );

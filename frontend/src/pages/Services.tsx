@@ -5,7 +5,7 @@ import SEO from "../components/SEO";
 const services = [
   {
     title: "AI Red-Team Assessment",
-    description: "Hands-on adversarial testing of your AI system by experienced security researchers. We attack your AI the way real threat actors would — and deliver a findings report with reproduction steps, severity ratings, and remediation guidance.",
+    description: "Hands-on adversarial testing of your AI system. We attack your AI the way real threat actors would — and deliver a findings report with reproduction steps, severity ratings, and remediation guidance.",
     includes: [
       "Scoping call to map your AI attack surface",
       "Adversarial testing across 8+ attack strategies",
@@ -70,13 +70,13 @@ export default function Services() {
                   <h3 style={{ fontSize: "0.85rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em", color: "var(--muted)", marginBottom: 10 }}>What's included</h3>
                   <ul style={{ margin: 0, paddingLeft: 20, display: "grid", gap: 6 }}>
                     {s.includes.map((item) => (
-                      <li key={item} style={{ fontSize: "0.92rem", color: "#1f2937", lineHeight: 1.5 }}>{item}</li>
+                      <li key={item} style={{ fontSize: "0.92rem", color: "var(--text)", lineHeight: 1.5 }}>{item}</li>
                     ))}
                   </ul>
                 </div>
                 <div>
                   <h3 style={{ fontSize: "0.85rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em", color: "var(--muted)", marginBottom: 10 }}>Best for</h3>
-                  <p style={{ fontSize: "0.94rem", color: "#1f2937", lineHeight: 1.6 }}>{s.best}</p>
+                  <p style={{ fontSize: "0.94rem", color: "var(--text)", lineHeight: 1.6 }}>{s.best}</p>
                 </div>
               </div>
               <div style={{ marginTop: 20 }}>
@@ -93,7 +93,7 @@ export default function Services() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24 }}>
           <div>
             <h3 style={{ fontSize: "1rem", marginBottom: 8 }}>Real attack experience</h3>
-            <p className="card-description">We've found critical vulnerabilities in production AI systems — recruiting agents, travel assistants, search features, workspace tools. Our findings are published, peer-reviewed, and presented at security conferences.</p>
+            <p className="card-description">We've found critical vulnerabilities in production AI systems — recruiting agents, travel assistants, search features, workspace tools. Our findings are published with their disclosure records, vendor responses and evidence limits.</p>
           </div>
           <div>
             <h3 style={{ fontSize: "1rem", marginBottom: 8 }}>Not just automated scans</h3>

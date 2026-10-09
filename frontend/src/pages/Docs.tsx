@@ -56,7 +56,7 @@ const enforceResponseExample = `{
 export default function Docs() {
   return (
     <>
-      <SEO title="Documentation" description="API integration quickstart for Akrivon AI. Connect your AI endpoint, define behavior boundaries, and run structured scans." path="/docs" />
+      <SEO title="Documentation" description="API integration quickstart for KnowYourAI. Connect your AI endpoint, define behavior boundaries, and run structured scans." path="/docs" />
       <Section
         eyebrow="Docs"
         title="API integration quickstart"
@@ -81,7 +81,7 @@ export default function Docs() {
 
       <Section
         title="Proxy integration"
-        description="Route production traffic through the Akrivon enforcement layer before it reaches your target model endpoint."
+        description="Route production traffic through the KnowYourAI enforcement layer before it reaches your target model endpoint."
       >
         <pre>{`Client -> https://api.example.com/proxy/{layer_id} -> target_api`}</pre>
       </Section>

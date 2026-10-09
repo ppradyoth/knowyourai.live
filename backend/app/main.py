@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import asyncio
+import contextvars
 import json
 import os
+from typing import Literal
 
 import httpx
 from fastapi import Depends, FastAPI, HTTPException, Request
@@ -25,16 +27,30 @@ from .db import (
     update_scan_record,
 )
 from .engine import run_scan
+from .llm import use_provider_key
 from .models import EnforceRequest, EnforceResponse, LayerCreate, LayerUpdate, ScanConfig, ScanResponse
+from .provider_keys import delete_provider_key, provider_key_status, save_provider_key
 from .proxy import router as proxy_router
 from .rate_limit import check_rate_limit, check_scan_quota, get_usage
 from .reports import generate_scan_pdf
 from .security import assert_safe_url
 from .tasks import enqueue_scan_job
+from pipeline.router import router as pipeline_router
+from pipeline.stream_processor import event_stream
 
 _MAX_RESPONSE_CHARS = 32_768
 
-app = FastAPI(title="AkrivonAI", version="1.0.0")
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app_instance: FastAPI):
+    from pipeline.warehouse import init_warehouse
+    init_warehouse()
+    await event_stream.start()
+    yield
+    await event_stream.stop()
+
+app = FastAPI(title="KnowYourAI", version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -45,6 +61,7 @@ app.add_middleware(
 )
 
 app.include_router(proxy_router)
+app.include_router(pipeline_router)
 
 
 @app.get("/health")
@@ -56,6 +73,7 @@ async def health() -> dict[str, str]:
 
 @app.post("/scan")
 async def scan(config: ScanConfig, user: dict = Depends(check_scan_quota)):
+    use_provider_key(user["uid"])
     scan_id = create_scan_record(uid=user["uid"], config=config.model_dump(mode="json"))
 
     task_name = enqueue_scan_job(scan_id, config.model_dump(mode="json"), user["uid"])
@@ -71,6 +89,13 @@ async def scan(config: ScanConfig, user: dict = Depends(check_scan_quota)):
             summary=result.summary.model_dump(),
             violations=[v.model_dump() for v in result.violations],
         )
+        await event_stream.emit({
+            "scan_id": scan_id,
+            "config": config.model_dump(mode="json"),
+            "summary": result.summary.model_dump(),
+            "violations": [v.model_dump() for v in result.violations],
+            "status": "complete",
+        })
         return {"scan_id": scan_id, "status": "complete", **result.model_dump()}
     except Exception as exc:
         update_scan_record(scan_id, status="failed")
@@ -88,6 +113,7 @@ async def scan_worker(scan_id: str, request: Request):
     config = ScanConfig.model_validate(body["config"])
 
     try:
+        use_provider_key(body["uid"])
         result = await run_scan(config)
         update_scan_record(
             scan_id,
@@ -168,6 +194,7 @@ def _call_runtime_target_api(target_url: str, prompt: str) -> str:
 
 @app.post("/enforce", response_model=EnforceResponse)
 async def enforce_route(payload: EnforceRequest, user: dict = Depends(check_rate_limit)) -> EnforceResponse:
+    use_provider_key(user["uid"])
     target_url = (str(payload.target_api).strip() if payload.target_api else "") or os.getenv("INTENT_TARGET_API_URL", "").strip()
 
     if target_url:
@@ -183,10 +210,11 @@ async def enforce_route(payload: EnforceRequest, user: dict = Depends(check_rate
         "blocked": payload.config.blocked,
     }
 
+    ctx = contextvars.copy_context()
     loop = asyncio.get_event_loop()
     result = await loop.run_in_executor(
         None,
-        lambda: enforce(prompt=payload.prompt, config=config, call_api=_proxy_call),
+        lambda: ctx.run(enforce, prompt=payload.prompt, config=config, call_api=_proxy_call),
     )
     return EnforceResponse.model_validate(result)
 
@@ -210,6 +238,30 @@ async def list_keys(user: dict = Depends(get_current_user)):
 @app.delete("/api-keys/{key_id}")
 async def delete_key(key_id: str, user: dict = Depends(get_current_user)):
     delete_api_key(uid=user["uid"], key_id=key_id)
+    return {"status": "deleted"}
+
+
+# ── Model provider key (the caller's own Claude or Gemini key) ──
+
+class ProviderKeyRequest(BaseModel):
+    provider: Literal["anthropic", "gemini"]
+    api_key: str = Field(min_length=20, max_length=200)
+    model: str | None = Field(default=None, max_length=64)
+
+
+@app.get("/provider-key")
+async def get_provider_key(user: dict = Depends(get_current_user)):
+    return provider_key_status(uid=user["uid"])
+
+
+@app.put("/provider-key")
+async def put_provider_key(body: ProviderKeyRequest, user: dict = Depends(get_current_user)):
+    return save_provider_key(uid=user["uid"], provider=body.provider, api_key=body.api_key, model=body.model)
+
+
+@app.delete("/provider-key")
+async def remove_provider_key(user: dict = Depends(get_current_user)):
+    delete_provider_key(uid=user["uid"])
     return {"status": "deleted"}
 
 

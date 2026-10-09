@@ -18,7 +18,7 @@ exports.onAssessmentRequest = onDocumentCreated(
     });
 
     await transporter.sendMail({
-      from: '"Akrivon AI" <pradyoth.ai@gmail.com>',
+      from: '"KnowYourAI" <pradyoth.ai@gmail.com>',
       to: "ppradyoth64@gmail.com",
       replyTo: data.email,
       subject: `New Assessment Request: ${data.name} (${data.company})`,

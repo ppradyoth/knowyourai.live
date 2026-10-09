@@ -11,6 +11,15 @@ function authHeaders(token: string | null): Record<string, string> {
   return headers;
 }
 
+async function errorMessage(response: Response, fallback: string): Promise<string> {
+  const text = await response.text();
+  try {
+    const detail = JSON.parse(text).detail;
+    if (typeof detail === "string") return detail;
+  } catch {}
+  return text || fallback;
+}
+
 export async function submitScan(config: ScanConfig, token: string | null = null): Promise<{ scan_id: string; status: string }> {
   const response = await fetch(SCAN_ENDPOINT, {
     method: "POST",
@@ -19,8 +28,7 @@ export async function submitScan(config: ScanConfig, token: string | null = null
   });
 
   if (!response.ok) {
-    const message = await response.text();
-    throw new Error(message || "Scan request failed");
+    throw new Error(await errorMessage(response, "Scan request failed"));
   }
 
   return response.json();
@@ -52,8 +60,7 @@ export async function runEnforce(payload: EnforceRequest, token: string | null =
   });
 
   if (!response.ok) {
-    const message = await response.text();
-    throw new Error(message || "Enforcement request failed");
+    throw new Error(await errorMessage(response, "Enforcement request failed"));
   }
 
   return (await response.json()) as EnforceResponse;

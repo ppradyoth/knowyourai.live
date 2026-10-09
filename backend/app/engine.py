@@ -8,7 +8,7 @@ from typing import Any
 import httpx
 from fastapi import HTTPException
 
-from .gemini_client import llm
+from .llm import llm
 from .models import Analysis, ScanConfig, ScanResponse, StrategyName, Summary, ViolationRecord
 from .security import assert_safe_url
 
