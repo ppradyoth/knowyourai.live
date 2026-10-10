@@ -45,13 +45,13 @@
     ],
     "headers": [
       {
-        "source": "/ctf{,/**}",
         "headers": [
           {
             "key": "Cache-Control",
             "value": "no-cache, no-store"
           }
-        ]
+        ],
+        "regex": "^/ctf(?:/(?:challenges|agentic|leaderboard|aisywlc|community|learn|labs|research|evolution|docs|privacy|progress)(?:/.*)?)?/?$"
       }
     ]
   },

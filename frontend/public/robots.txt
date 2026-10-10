@@ -8,3 +8,4 @@ Disallow: /enforce
 Disallow: /intentscan
 
 Sitemap: https://knowyourai.live/sitemap.xml
+Sitemap: https://knowyourai.live/ctf/sitemap.xml
