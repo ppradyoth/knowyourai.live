@@ -3,7 +3,16 @@
     {
       "source": "backend",
       "codebase": "default",
-      "runtime": "python311"
+      "runtime": "python311",
+      "ignore": [
+        "venv",
+        ".venv",
+        "__pycache__",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
     },
     {
       "source": "functions",
@@ -19,12 +28,30 @@
     ],
     "rewrites": [
       {
+        "source": "/ctf{,/**}",
+        "function": {
+          "functionId": "ctf",
+          "region": "us-central1"
+        }
+      },
+      {
         "source": "/api/**",
         "function": "api"
       },
       {
         "source": "**",
         "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/ctf{,/**}",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store"
+          }
+        ]
       }
     ]
   },

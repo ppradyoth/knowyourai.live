@@ -255,7 +255,7 @@ Weakest category      : jailbreaking (CSS 0.612)`,
           "Used in independent research: an engineer at Apiiro froze 11 of its system prompts into a nine-model regression study.",
         ],
         limit: "Scripted practice mode runs against mock resources and does not measure a real model's susceptibility.",
-        links: [{ label: "Play now", href: "https://prompt-injection-ctf-2026.web.app" }, gh("prompt-injection-ctf")],
+        links: [{ label: "Play now", href: "https://knowyourai.live/ctf" }, gh("prompt-injection-ctf")],
       },
       {
         slug: "build-and-break",

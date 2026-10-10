@@ -27,7 +27,7 @@ This project was previously called AkrivonAI.
 | While it is live | IntentScan (this repo) | Point it at your AI endpoint and get a risk score. |
 | | IntentEnforce (this repo) | Decide what a request is for before your model sees it. |
 | | [Railproof](https://github.com/ppradyoth/railproof) | If the action is not explicitly allowed, it does not execute. |
-| Learn how it breaks | [Prompt Injection CTF](https://github.com/ppradyoth/prompt-injection-ctf) | Break a constrained AI, then read the guardrail that stops you. |
+| Learn how it breaks | [Prompt Injection CTF](https://knowyourai.live/ctf) | Break a constrained AI, then read the guardrail that stops you. |
 | | [Build & Break Models From Scratch](https://github.com/ppradyoth/build-break-models-from-scratch) | You understand a mechanism when you can attack it. |
 | | [Intent Drift Playbook](https://github.com/ppradyoth/intent-drift-playbook) | The jailbreak no single-turn scanner can see. |
 | | [AI Security Resources](https://github.com/ppradyoth/ai-security-resources) | One map of the field, from foundations to red teaming. |

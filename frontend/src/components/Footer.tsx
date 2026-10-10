@@ -5,6 +5,7 @@ const footerGroups = [
     title: "For developers",
     links: [
       { to: "/tools", label: "Open-source tools" },
+      { to: "/ctf", label: "AI Security CTF" },
       { to: "/product", label: "Platform" },
       { to: "/intentscan", label: "IntentScan" },
       { to: "/enforce", label: "IntentEnforce" },
@@ -53,9 +54,9 @@ export default function Footer() {
             <ul className="footer-list">
               {group.links.map((link) => (
                 <li key={link.to}>
-                  <Link to={link.to} className="footer-link">
+                  {link.to === "/ctf" ? <a href="/ctf" className="footer-link">{link.label}</a> : <Link to={link.to} className="footer-link">
                     {link.label}
-                  </Link>
+                  </Link>}
                 </li>
               ))}
             </ul>

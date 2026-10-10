@@ -18,4 +18,5 @@
   <url><loc>https://knowyourai.live/security</loc><priority>0.4</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://knowyourai.live/terms</loc><priority>0.2</priority><changefreq>yearly</changefreq></url>
   <url><loc>https://knowyourai.live/privacy</loc><priority>0.2</priority><changefreq>yearly</changefreq></url>
+  <url><loc>https://knowyourai.live/ctf</loc></url>
 </urlset>

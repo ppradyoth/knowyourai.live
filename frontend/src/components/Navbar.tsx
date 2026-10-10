@@ -86,6 +86,7 @@ export default function Navbar() {
               </div>
             </div>
           ))}
+          <a href="/ctf" className="kn-link">CTF</a>
           <NavLink to="/pricing" className={({ isActive }) => `kn-link${isActive ? " active" : ""}`}>Pricing</NavLink>
         </nav>
 
@@ -116,6 +117,7 @@ export default function Navbar() {
             {group.children.map((child) => <Link key={child.to} to={child.to}>{child.label}<span aria-hidden="true">→</span></Link>)}
           </div>
         ))}
+        <a href="/ctf">CTF<span aria-hidden="true">→</span></a>
         <p className="kn-mobile-group">Account</p>
         <Link to="/pricing">Pricing<span aria-hidden="true">→</span></Link>
         {user
