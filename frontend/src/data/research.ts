@@ -529,7 +529,7 @@ export const studies: Study[] = [
     ]
   },
   {
-    "target": "Swiggy support assistant",
+    "target": "Food delivery chatbot",
     "kind": "Observation",
     "date": "August 30, 2026",
     "hook": "The assistant claimed the credit landed. The wallet said ₹0.",
