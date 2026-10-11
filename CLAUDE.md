@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+Follow GUIDE_PLAN.md section 0.
+
 ## Defaults (read first)
 - No explanations, no trailing summaries — just make the change
 - No new files unless explicitly asked
@@ -10,7 +12,7 @@
 
 ## Project Overview
 
-AkrivonAI is an AI boundary testing and enforcement platform with two core capabilities:
+KnowYourAI is an AI boundary testing and enforcement platform with two core capabilities:
 1. **IntentScan** (`/scan`) — red-team probe generation and violation detection against a target AI API
 2. **IntentEnforce** (`/enforce`) — real-time intent classification and policy enforcement acting as a proxy layer
 
@@ -74,7 +76,7 @@ npm run build     # tsc -b && vite build → frontend/dist/
 
 ### Frontend (`frontend/`)
 
-React SPA using React Router v6. All routes nest under a single `Layout` wrapper (`components/Layout.tsx` → Navbar + Outlet + Footer). Two pages make live backend calls:
+React SPA using React Router v7. All routes nest under a single `Layout` wrapper (`components/Layout.tsx` → Navbar + Outlet + Footer). Two pages make live backend calls:
 - `/intentscan` (`pages/Demo.tsx`) — IntentScan form using `ConfigForm`, `ResultsPanel`, `ViolationCard` components
 - `/enforce` (`pages/Enforce.tsx`) — IntentEnforce playground
 
