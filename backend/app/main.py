@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field
 
 from intent_layer.engine import enforce
 from .auth import create_api_key, delete_api_key, get_current_user, list_api_keys
+from .assessment import router as assessment_router
 from .db import (
     create_layer,
     create_scan_record,
@@ -62,6 +63,7 @@ app.add_middleware(
 
 app.include_router(proxy_router)
 app.include_router(pipeline_router)
+app.include_router(assessment_router)
 
 
 @app.get("/health")

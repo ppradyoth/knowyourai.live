@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-import type { EnforceRequest, EnforceResponse, ScanConfig, ScanResponse } from "./types";
+import type { AssessmentRequest, AssessmentResponse, EnforceRequest, EnforceResponse, ScanConfig, ScanResponse } from "./types";
 
 const BASE = import.meta.env.VITE_API_BASE ?? "/api";
 const SCAN_ENDPOINT = `${BASE}/scan`;
@@ -9,6 +9,26 @@ function authHeaders(token: string | null): Record<string, string> {
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (token) headers["Authorization"] = `Bearer ${token}`;
   return headers;
+}
+
+export async function planAssessment(payload: AssessmentRequest, token: string): Promise<AssessmentResponse> {
+  const response = await fetch(`${BASE}/assessments/plan`, {
+    method: "POST",
+    headers: authHeaders(token),
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) throw new Error(await errorMessage(response, "Assessment planning failed"));
+  return response.json();
+}
+
+export async function extractAssessmentPdf(file: File, token: string): Promise<string> {
+  const response = await fetch(`${BASE}/assessments/extract-pdf`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/pdf" },
+    body: file,
+  });
+  if (!response.ok) throw new Error(await errorMessage(response, "PDF extraction failed"));
+  return (await response.json()).content;
 }
 
 async function errorMessage(response: Response, fallback: string): Promise<string> {

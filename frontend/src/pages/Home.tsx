@@ -154,7 +154,7 @@ export default function Home() {
           <div className="hm-path" data-reveal>
             <p className="eyebrow">For developers · Free</p>
             <h3>Test it yourself</h3>
-            <p>Scanners and benchmarks for your terminal and CI, plus IntentScan and IntentEnforce hosted free on your own Claude or Gemini key.</p>
+            <p>Scanners and benchmarks for your terminal and CI, plus Assessment Intelligence, IntentScan and IntentEnforce hosted free on your own Claude or Gemini key.</p>
             <ol className="hm-steps">
               <li><span>1</span>Sign in with Google</li>
               <li><span>2</span>Add your Claude or Gemini API key, stored encrypted</li>

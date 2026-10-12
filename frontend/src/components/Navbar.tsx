@@ -9,6 +9,7 @@ const groups: NavGroup[] = [
     { to: "/tools", label: "Tools", hint: "Open-source scanners, benchmarks and labs" },
     { to: "/intentscan", label: "IntentScan", hint: "Probe a live endpoint for violations" },
     { to: "/enforce", label: "IntentEnforce", hint: "Intent policy in front of your model" },
+    { to: "/assessment", label: "Assessment Intelligence", hint: "Plan tests from reports, rules and code" },
     { to: "/docs", label: "API docs", hint: "Connect your endpoint" },
   ]},
   { label: "For teams", to: "/services", children: [

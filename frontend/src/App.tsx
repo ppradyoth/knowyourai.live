@@ -8,6 +8,7 @@ import CaseStudies from "./pages/CaseStudies";
 import RequestAssessment from "./pages/RequestAssessment";
 
 const About = lazy(() => import("./pages/About"));
+const Assessment = lazy(() => import("./pages/Assessment"));
 const Architecture = lazy(() => import("./pages/Architecture"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
@@ -48,6 +49,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="tools" element={<Tools />} />
           <Route path="product" element={<Product />} />
+          <Route path="assessment" element={<Assessment />} />
           <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="use-cases" element={<UseCases />} />
           <Route path="pricing" element={<Pricing />} />
