@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ConfigForm from "../components/ConfigForm";
 import ResultsPanel from "../components/ResultsPanel";
 import Section from "../components/Section";
@@ -14,6 +14,7 @@ export default function Demo() {
   const [error, setError] = useState<string | null>(null);
   const { getToken } = useAuth();
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   const handleRunScan = async (config: ScanConfig) => {
     setLoading(true);
@@ -57,7 +58,7 @@ export default function Demo() {
 
       <section className="section">
         <div className="workspace-grid" aria-label="Scan workspace">
-          <ConfigForm onSubmit={handleRunScan} loading={loading} />
+          <ConfigForm onSubmit={handleRunScan} loading={loading} assessmentScope={state?.assessmentScope} />
           {status && (
             <div style={{ padding: "1rem", background: "var(--clr-surface, var(--text))", borderRadius: 8, marginBottom: "1rem", textAlign: "center", color: "var(--clr-accent, #00d4aa)" }}>
               {status}

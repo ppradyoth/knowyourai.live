@@ -9,6 +9,7 @@ const footerGroups = [
       { to: "/product", label: "Platform" },
       { to: "/intentscan", label: "IntentScan" },
       { to: "/enforce", label: "IntentEnforce" },
+      { to: "/assessment", label: "Assessment Intelligence" },
       { to: "/docs", label: "Docs" },
       { to: "/architecture", label: "Architecture" },
     ],

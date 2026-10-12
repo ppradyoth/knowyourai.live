@@ -1,4 +1,5 @@
 import { FormEvent, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { runEnforce } from "../api";
 import { useAuth } from "../hooks/useAuth";
 import Section from "../components/Section";
@@ -12,10 +13,11 @@ function splitCsv(value: string): string[] {
 }
 
 export default function Enforce() {
+  const { state } = useLocation();
   const [prompt, setPrompt] = useState("");
   const [targetApi, setTargetApi] = useState("https://example.com/ai-endpoint");
-  const [allowed, setAllowed] = useState("payments_api_help,sdk_usage");
-  const [blocked, setBlocked] = useState("financial_advice,general_coding");
+  const [allowed, setAllowed] = useState(() => state?.assessmentPolicy?.allowed.join(",") ?? "payments_api_help,sdk_usage");
+  const [blocked, setBlocked] = useState(() => state?.assessmentPolicy?.blocked.join(",") ?? "financial_advice,general_coding");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<EnforceResponse | null>(null);
@@ -60,6 +62,7 @@ export default function Enforce() {
             <header className="panel-header">
               <h2 id="enforce-title">Run Enforcement</h2>
               <p className="panel-subtitle">Provide a prompt and intent policy configuration.</p>
+              {state?.assessmentPolicy && <p className="field-hint">Suggested categories imported from your assessment. Review them before testing. This playground evaluates input purpose; it does not authorize tool actions or execute assessment scenarios.</p>}
             </header>
 
             <form className="form-stack" onSubmit={handleSubmit}>

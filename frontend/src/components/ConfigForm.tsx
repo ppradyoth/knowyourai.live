@@ -4,6 +4,7 @@ import type { ScanConfig } from "../types";
 interface ConfigFormProps {
   onSubmit: (config: ScanConfig) => Promise<void>;
   loading: boolean;
+  assessmentScope?: { purpose: string; allowed: string[]; blocked: string[] };
 }
 
 const initialForm = {
@@ -22,8 +23,13 @@ function splitList(value: string): string[] {
     .filter(Boolean);
 }
 
-export default function ConfigForm({ onSubmit, loading }: ConfigFormProps) {
-  const [form, setForm] = useState(initialForm);
+export default function ConfigForm({ onSubmit, loading, assessmentScope }: ConfigFormProps) {
+  const [form, setForm] = useState(() => assessmentScope ? {
+    ...initialForm,
+    use_case: assessmentScope.purpose,
+    allowedCapabilities: assessmentScope.allowed.join(", "),
+    disallowedCapabilities: assessmentScope.blocked.join(", "),
+  } : initialForm);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -45,6 +51,7 @@ export default function ConfigForm({ onSubmit, loading }: ConfigFormProps) {
       <header className="panel-header">
         <h2 id="config-title">Configuration</h2>
         <p className="panel-subtitle">Define your API scope and run a boundary intent check.</p>
+        {assessmentScope && <p className="field-hint">Scope imported from your assessment. This runs a separate IntentScan, not the assessment's multi-step scenarios. Add your endpoint and review before running.</p>}
       </header>
 
       <form className="form-stack" onSubmit={handleSubmit}>

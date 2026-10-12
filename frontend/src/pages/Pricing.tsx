@@ -10,11 +10,14 @@ export default function Pricing() {
       <Section
         eyebrow="Pricing"
         title="Free. Bring your own model key."
-        description="IntentScan and IntentEnforce cost nothing to use. They run on your own Claude or Gemini API key, so you pay your model provider directly for the calls you make and nothing to us."
+        description="Assessment Intelligence, IntentScan and IntentEnforce cost nothing to use. They run on your own Claude or Gemini API key, so you pay your model provider directly for the calls you make and nothing to us."
       />
 
       <Section title="What you get">
         <div className="card-grid three-col">
+          <Card title="Assessment Intelligence" description="A draft red-team assessment from your own context">
+            <ul className="list"><li>Reports, knowledge-base text, source files and text-based PDFs</li><li>Prioritized scenarios, source references and legitimate controls</li><li>Markdown and JSON exports. Planning does not execute tests.</li></ul>
+          </Card>
           <Card title="IntentScan" description="Adversarial probes against your AI endpoint">
             <ul className="list">
               <li>Role transformation, gradual drift and language variation strategies</li>

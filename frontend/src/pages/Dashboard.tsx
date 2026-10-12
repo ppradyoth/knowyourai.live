@@ -72,6 +72,13 @@ export default function Dashboard() {
         <ActionCard to="/enforce" label="Enforce" sub="Test playground" />
       </div>
 
+      <div className="panel" style={{ marginBottom: 32 }}>
+        <p className="eyebrow">Assessment Intelligence · Preview</p>
+        <h2>Build the assessment before you run the tests.</h2>
+        <p className="paragraph">Use previous reports, knowledge-base documents and source files to plan prioritized scenarios with source references and legitimate controls.</p>
+        <Link to="/assessment" className="button-primary" style={{ marginTop: 16 }}>Build an assessment</Link>
+      </div>
+
       <div className="panel">
         <div className="panel-header">
           <h2>Recent Scans</h2>

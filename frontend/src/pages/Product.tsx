@@ -6,7 +6,7 @@ import SEO from "../components/SEO";
 export default function Product() {
   return (
     <>
-      <SEO title="Platform" description="KnowYourAI Behavior QA Platform — IntentScan for pre-production testing, IntentEnforce for runtime enforcement, and a full API for integration." path="/product" />
+      <SEO title="Platform" description="KnowYourAI: Assessment Intelligence for planning, IntentScan for adversarial testing, and IntentEnforce for runtime input policies. Free on your own model key." path="/product" />
       <Section
         eyebrow="Product"
         title="KnowYourAI Behavior QA Platform"
@@ -15,6 +15,12 @@ export default function Product() {
 
       <Section title="Platform tools">
         <div className="card-grid two-col">
+          <div className="card" style={{ padding: 28 }}>
+            <p className="eyebrow">Preview</p>
+            <h3 style={{ fontSize: "1.15rem", marginBottom: 8 }}>Assessment Intelligence</h3>
+            <p className="card-description">Bring reports, knowledge-base documents and source code. Generate a draft assessment with prioritized scenarios, source references, legitimate controls and coverage gaps.</p>
+            <div style={{ marginTop: 16 }}><Link to="/assessment" className="button-primary" style={{ fontSize: "0.85rem", padding: "8px 16px" }}>Build an assessment</Link></div>
+          </div>
           <div className="card" style={{ padding: 28 }}>
             <h3 style={{ fontSize: "1.15rem", marginBottom: 8 }}>IntentScan</h3>
             <p className="card-description">Pre-production adversarial testing. Define your AI's boundaries, generate adversarial probes across 8+ attack strategies, and get a risk-scored violation report.</p>
