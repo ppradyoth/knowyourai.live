@@ -75,6 +75,41 @@ jobs:
       - name: Check the prerendered tools heading
         working-directory: frontend
         run: grep -c "<h1" dist/tools.html
+      - name: Check Hosting routes in the GitHub runner emulator
+        run: |
+          cat > "$RUNNER_TEMP/verify-kya-hosting.mjs" <<'JS'
+          import assert from "node:assert/strict";
+          const base = "http://127.0.0.1:5000";
+          const get = (path, redirect = "manual") => fetch(`${base}${path}`, { redirect, signal: AbortSignal.timeout(10000) });
+          const tools = await get("/tools");
+          console.log(`/tools: ${tools.status}`);
+          assert.equal(tools.status, 200);
+          const html = await tools.text();
+          const slash = await get("/tools/");
+          console.log(`/tools/: ${slash.status}`);
+          assert.ok([200, 301].includes(slash.status));
+          const normalized = slash.status === 301 ? await get("/tools/", "follow") : slash;
+          assert.equal(await normalized.text(), html);
+          for (const path of ["/does-not-exist", "/llms.txt"]) {
+            const response = await get(path);
+            console.log(`${path}: ${response.status}`);
+            assert.equal(response.status, 404);
+          }
+          for (const path of ["/dashboard", "/intentscan", "/enforce", "/demo"]) {
+            const response = await get(path);
+            console.log(`${path}: ${response.status}`);
+            assert.equal(response.status, 200);
+            assert.match(await response.text(), /<meta name="robots" content="noindex">/);
+          }
+          const script = html.match(/<script\b[^>]*src="([^"]+)"[^>]*>/)?.[1];
+          assert.ok(script);
+          const asset = await get(script);
+          assert.equal(asset.status, 200);
+          assert.match(asset.headers.get("cache-control"), /max-age=31536000/);
+          assert.match(asset.headers.get("cache-control"), /immutable/);
+          console.log("Hosting checks passed, including app shells and immutable assets.");
+          JS
+          npx --yes firebase-tools emulators:exec --only hosting --project demo-kya "node '$RUNNER_TEMP/verify-kya-hosting.mjs'"
       - name: Install the isolated browser test harness
         run: |
           mkdir -p "$RUNNER_TEMP/assessment-browser/tests"
