@@ -40,6 +40,10 @@ const UseCases = lazy(() => import("./pages/UseCases"));
 const Why = lazy(() => import("./pages/Why"));
 const WhyKnowYourAI = lazy(() => import("./pages/WhyKnowYourAI"));
 const WhatsUnique = lazy(() => import("./pages/WhatsUnique"));
+const GuideIndex = lazy(() => import("./pages/guide/GuideIndex"));
+const GuideStage = lazy(() => import("./pages/guide/GuideStage"));
+const GuideBuild = lazy(() => import("./pages/guide/GuideBuild"));
+const GuideControl = lazy(() => import("./pages/guide/GuideControl"));
 
 export default function App() {
   return (
@@ -48,6 +52,10 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="tools" element={<Tools />} />
+          <Route path="guide" element={<GuideIndex />} />
+          <Route path="guide/stage/:slug" element={<GuideStage />} />
+          <Route path="guide/build/:slug" element={<GuideBuild />} />
+          <Route path="guide/controls/:slug" element={<GuideControl />} />
           <Route path="product" element={<Product />} />
           <Route path="assessment" element={<Assessment />} />
           <Route path="how-it-works" element={<HowItWorks />} />

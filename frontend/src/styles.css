@@ -1955,3 +1955,32 @@ pre.terminal-body { padding: 18px; }
 .gd-markdown .gd-code-block .terminal-body { margin: 0; overflow-x: auto; background: transparent; }
 .gd-markdown .gd-code-block code { padding: 0; color: inherit; background: transparent; border: 0; font-size: inherit; white-space: pre; }
 .gd-code-language { color: #cbd5e1; font: 12px "IBM Plex Mono", monospace; }
+
+.gd-guide { display: grid; gap: 28px; }
+.gd-guide > .button-primary { justify-self: start; }
+.gd-guide a { color: var(--primary); }
+.gd-guide a.button-primary { color: var(--ink-contrast); }
+.gd-guide-meta { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+.gd-guide-layout { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 48px; align-items: start; }
+.gd-guide-main { min-width: 0; display: grid; gap: 28px; }
+.gd-guide-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.gd-guide-grid .card { display: grid; gap: 12px; }
+.gd-guide-timeline, .gd-guide-list { display: grid; gap: 24px; padding-left: 24px; }
+.gd-guide-timeline li { padding-left: 10px; }
+.gd-guide-timeline h3, .gd-guide-list h3 { margin-bottom: 8px; }
+.gd-guide-time { display: inline-block; padding: 4px 10px; margin-bottom: 12px; border: 1px solid var(--border); border-radius: 6px; color: var(--muted); font: 0.85rem "IBM Plex Mono", monospace; }
+.gd-guide-nav { position: sticky; top: 110px; padding-left: 20px; border-left: 1px solid var(--border); }
+.gd-guide-nav ol { display: grid; gap: 14px; padding-left: 20px; margin-top: 16px; }
+.gd-guide-nav a { color: var(--muted); }
+.gd-guide-nav a[aria-current="page"] { color: var(--primary); font-weight: 600; }
+.gd-case-excerpt { display: grid; gap: 16px; margin-block: 20px; }
+.gd-checklist-line { border-left: 3px solid var(--primary); }
+.gd-checklist-line h2 { font-size: 1rem; margin-bottom: 12px; }
+.gd-guide-next { padding-top: 20px; border-top: 1px solid var(--border); }
+@media (max-width: 900px) {
+  .gd-guide-layout { grid-template-columns: minmax(0, 1fr); }
+  .gd-guide-nav { position: static; }
+}
+@media (max-width: 600px) {
+  .gd-guide-grid { grid-template-columns: minmax(0, 1fr); }
+}

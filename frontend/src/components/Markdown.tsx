@@ -12,10 +12,10 @@ function headingId(children: ReactNode) {
   return textOf(children).toLowerCase().trim().replace(/[^\p{L}\p{N}\s-]/gu, "").replace(/\s+/g, "-");
 }
 
-export default function Markdown({ children }: { children: string }) {
+export default function Markdown({ children, afterHeading = {} }: { children: string; afterHeading?: Record<string, ReactNode> }) {
   return <div className="prose gd-markdown"><ReactMarkdown remarkPlugins={[remarkGfm]} components={{
     h1: ({ children }) => <h2 id={headingId(children)}>{children}</h2>,
-    h2: ({ children }) => <h2 id={headingId(children)}>{children}</h2>,
+    h2: ({ children }) => <><h2 id={headingId(children)}>{children}</h2>{afterHeading[headingId(children)]}</>,
     h3: ({ children }) => <h3 id={headingId(children)}>{children}</h3>,
     a: ({ href, children }) => <a href={href} {...(/^https?:\/\//i.test(href ?? "")
       ? { target: "_blank", rel: "noopener noreferrer" } : {})}>{children}</a>,
