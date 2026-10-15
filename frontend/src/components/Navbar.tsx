@@ -29,7 +29,11 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [theme, setTheme] = useState(() => document.documentElement.dataset.theme === "light" ? "light" : "dark");
+  const [theme, setTheme] = useState("dark");
+
+  useEffect(() => {
+    setTheme(document.documentElement.dataset.theme === "light" ? "light" : "dark");
+  }, []);
 
   useEffect(() => { setOpen(false); }, [pathname]);
 
