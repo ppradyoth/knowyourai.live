@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
@@ -84,3 +84,16 @@ report("R7", shells.length === 0, shells.length ? `missing noindex page: ${shell
 
 const empty = pages.filter((page) => !page.html.includes('<div id="root">') || /<div id="root">\s*<\/div>/.test(page.html));
 report("R8", empty.length === 0, empty.length ? `empty public root: ${empty.map((page) => page.route).join(", ")}` : "every public root contains prerendered content");
+
+const sitemap = join(dist, "sitemap.xml");
+const listed = existsSync(sitemap) ? [...readFileSync(sitemap, "utf8").matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => decode(match[1])).sort() : [];
+const expected = pages.filter((page) => !meta(page.html, "robots").split(/,\s*/).includes("noindex"))
+  .map((page) => `https://knowyourai.live${page.route}`).sort();
+report("R9", existsSync(sitemap) && listed.length === expected.length && listed.every((url, index) => url === expected[index]),
+  "sitemap.xml lists exactly the indexable public routes");
+
+const llms = join(dist, "llms.txt");
+report("R10", existsSync(llms) && readFileSync(llms, "utf8").startsWith("# KnowYourAI\n"), "llms.txt starts with # KnowYourAI");
+
+const image = join(dist, "og-image.png");
+report("R11", existsSync(image) && statSync(image).size > 5 * 1024, "og-image.png exists and is larger than 5 KB");

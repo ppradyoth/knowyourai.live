@@ -4,8 +4,9 @@ Disallow: /dashboard
 Disallow: /account
 Disallow: /scans
 Disallow: /layers
-Disallow: /enforce
-Disallow: /intentscan
+Disallow: /app
+Disallow: /login
+Disallow: /signup
 
 Sitemap: https://knowyourai.live/sitemap.xml
 Sitemap: https://knowyourai.live/ctf/sitemap.xml

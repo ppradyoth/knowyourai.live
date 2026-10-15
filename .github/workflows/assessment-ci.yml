@@ -90,11 +90,15 @@ jobs:
           assert.ok([200, 301].includes(slash.status));
           const normalized = slash.status === 301 ? await get("/tools/", "follow") : slash;
           assert.equal(await normalized.text(), html);
-          for (const path of ["/does-not-exist", "/llms.txt"]) {
+          for (const path of ["/does-not-exist"]) {
             const response = await get(path);
             console.log(`${path}: ${response.status}`);
             assert.equal(response.status, 404);
           }
+          const llms = await get("/llms.txt");
+          console.log(`/llms.txt: ${llms.status}`);
+          assert.equal(llms.status, 200);
+          assert.ok((await llms.text()).startsWith("# KnowYourAI\n"));
           for (const path of ["/dashboard", "/intentscan", "/enforce", "/demo"]) {
             const response = await get(path);
             console.log(`${path}: ${response.status}`);
