@@ -97,3 +97,7 @@ report("R10", existsSync(llms) && readFileSync(llms, "utf8").startsWith("# KnowY
 
 const image = join(dist, "og-image.png");
 report("R11", existsSync(image) && statSync(image).size > 5 * 1024, "og-image.png exists and is larger than 5 KB");
+
+const reviewedGuide = pages.filter((page) => page.route.startsWith("/guide/") && !meta(page.html, "robots").split(/,\s*/).includes("noindex"));
+const missingMarkdown = reviewedGuide.filter((page) => !existsSync(join(dist, `${page.route.slice(1)}.md`)));
+report("R12", missingMarkdown.length === 0, missingMarkdown.length ? `missing markdown: ${missingMarkdown.map((page) => page.route).join(", ")}` : `${reviewedGuide.length} reviewed guide pages have markdown twins`);

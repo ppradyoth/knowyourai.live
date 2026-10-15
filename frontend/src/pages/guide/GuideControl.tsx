@@ -32,6 +32,8 @@ export default function GuideControl() {
       <aside className="card gd-checklist-line"><h2>Checklist line</h2><p>{meta.checklist}</p></aside>
       {meta.tools.length > 0 && <section><h2>Tools</h2><div className="gd-guide-grid">{meta.tools.map((slug) => <ToolLink key={slug} slug={slug} />)}</div></section>}
       {next && <p className="gd-guide-next">Next in this stage: <Link to={`/guide/controls/${next.slug}`}>{next.meta.title}</Link></p>}
+      <p><a href={`https://github.com/ppradyoth/knowyourai.live/blob/main/frontend/content/controls/${control.slug}.md`} target="_blank" rel="noopener noreferrer">Edit on GitHub</a>
+        {meta.review === "reviewed" && <> · <a href={`${path}.md`}>View as markdown</a></>}</p>
       <p className="gd-guide-meta">Want this tested on your system? <Link to="/request">Request an assessment.</Link></p>
     </article><GuideNav stage={meta.stage} current={control.slug} /></div>
   </section>;

@@ -65,6 +65,14 @@ const content = new Map([
   ...getBuilds().map((item) => [`/guide/build/${item.slug}`, item]),
   ...getPosts().map((item) => [`/blog/${item.slug}`, item]),
 ]);
+const reviewedGuide = [...content].filter(([route, item]) => route.startsWith("/guide/") && item.meta.review === "reviewed");
+for (const [route, item] of reviewedGuide) {
+  const path = join(dist, `${route.slice(1)}.md`);
+  mkdirSync(dirname(path), { recursive: true });
+  writeFileSync(path, `# ${item.meta.title}\n\n${item.body}\n`);
+}
+writeFileSync(join(dist, "llms-full.txt"), ["# KnowYourAI", ...reviewedGuide.map(([route, item]) =>
+  `# ${item.meta.title}\n\nSource: ${site}${route}\n\n${item.body}`)].join("\n\n") + "\n");
 const urls = indexable.map((record) => {
   const updated = content.get(record.route)?.meta.updated;
   return `  <url><loc>${escape(`${site}${record.route}`)}</loc>${updated ? `<lastmod>${escape(updated)}</lastmod>` : ""}</url>`;
