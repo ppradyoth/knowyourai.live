@@ -2,7 +2,8 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
-import { publicRoutes } from "../dist-ssr/entry-server.js";
+import { parse } from "yaml";
+import { publicRoutes, caseStudies, studies, toolStages } from "../dist-ssr/entry-server.js";
 
 const dist = resolve(fileURLToPath(new URL("../dist/", import.meta.url)));
 const index = join(dist, "index.html");
@@ -101,3 +102,67 @@ report("R11", existsSync(image) && statSync(image).size > 5 * 1024, "og-image.pn
 const reviewedGuide = pages.filter((page) => page.route.startsWith("/guide/") && !meta(page.html, "robots").split(/,\s*/).includes("noindex"));
 const missingMarkdown = reviewedGuide.filter((page) => !existsSync(join(dist, `${page.route.slice(1)}.md`)));
 report("R12", missingMarkdown.length === 0, missingMarkdown.length ? `missing markdown: ${missingMarkdown.map((page) => page.route).join(", ")}` : `${reviewedGuide.length} reviewed guide pages have markdown twins`);
+
+const contentRoot = fileURLToPath(new URL("../content/", import.meta.url));
+const content = files(contentRoot).filter((file) => file.endsWith(".md")).map((file) => {
+  const raw = readFileSync(file, "utf8");
+  const frontmatter = raw.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
+  if (!frontmatter) throw new Error(`${file}: YAML frontmatter is required`);
+  return { file, raw, slug: file.split(sep).pop().replace(/\.md$/, ""), kind: file.split(sep).at(-2), meta: parse(frontmatter[1]), body: raw.slice(frontmatter[0].length).trim() };
+});
+const controls = content.filter((item) => item.kind === "controls");
+const stageSlugs = ["one-hour-baseline", "before-first-users", "before-first-customer", "before-first-enterprise-deal", "running-it"];
+const buildSlugs = ["chatbot", "rag", "tool-calling-agent", "mcp-server", "coding-agent-workflow", "agent-with-memory", "llm-judge", "local-models"];
+const caseTargets = {
+  "jack-and-jill": "Jack & Jill AI", "notion-ai": "Notion AI", "priceline-penny": "Priceline (Penny)",
+  "brave-leo": "Brave Leo", "meta-ai-whatsapp": "Meta AI (WhatsApp)", "claude-code": "Anthropic Claude Code",
+  "reddit-answers": "Reddit Answers", "harvey-labs": "Harvey Labs", "hackerone-hai": "HackerOne Hai",
+  "codeant-ai-benchmark": "CodeAnt AI benchmark", "food-delivery-chatbot": "Food delivery chatbot",
+};
+const toolSlugs = toolStages.flatMap((stage) => stage.tools.map((tool) => tool.slug));
+const isText = (value) => typeof value === "string" && value.trim().length > 0;
+const isList = (value) => Array.isArray(value) && value.every(isText);
+const invalidControls = controls.flatMap(({ file, meta: value }) => {
+  const problems = ["title", "description", "stage", "time", "checklist", "agent_rule", "updated"].filter((field) => !isText(value[field])).map((field) => `${field} is required`);
+  if (!["pending", "reviewed"].includes(value.review)) problems.push("invalid review");
+  if (!stageSlugs.includes(value.stage)) problems.push("invalid stage");
+  if (!isList(value.builds) || !value.builds.length || value.builds.some((slug) => !buildSlugs.includes(slug))) problems.push("invalid builds");
+  if (value.tools !== undefined && (!isList(value.tools) || value.tools.some((slug) => !toolSlugs.includes(slug)))) problems.push("invalid tools");
+  if (value.owasp !== undefined && !isList(value.owasp)) problems.push("invalid owasp");
+  if (value.case !== undefined && !Object.hasOwn(caseTargets, value.case)) problems.push("invalid case");
+  return problems.map((problem) => `${file}: ${problem}`);
+});
+report("R13", invalidControls.length === 0, invalidControls.length ? invalidControls.join("; ") : `${controls.length} controls have required fields and valid references`);
+
+const configOnlyControls = ["agent-config-lint", "vet-skills-mcp", "model-provenance", "threat-model", "incident-playbook"];
+const sectionProblems = controls.flatMap(({ file, slug, meta: value, body }) => {
+  const expected = ["The risk", ...(value.case ? ["What happened in production"] : []), "The fix", "Prove it works", "Know the limit"];
+  const headings = [...body.matchAll(/^## (.+)$/gm)].map((match) => match[1]);
+  const problems = headings.join("|") === expected.join("|") ? [] : ["incorrect H2 sections or order"];
+  const fix = body.split("## The fix\n")[1]?.split("\n## ")[0] ?? "";
+  const languages = [...fix.matchAll(/^```([^\n]*)\n[\s\S]*?^```[ \t]*$/gm)].map((match) => match[1].trim());
+  const code = languages.filter((language) => language === "ts").length === 1 && languages.filter((language) => language === "python").length === 1;
+  if (!code && !(configOnlyControls.includes(slug) && languages.some((language) => ["json", "bash"].includes(language)))) problems.push("The fix needs one ts and one python block, or allowed config fences");
+  return problems.map((problem) => `${file}: ${problem}`);
+});
+report("R14", sectionProblems.length === 0, sectionProblems.length ? sectionProblems.join("; ") : "control sections and fix code fences match the content model");
+
+const withoutCode = (body) => body.replace(/^```[^\n]*\n[\s\S]*?^```[ \t]*$/gm, "");
+const lengthProblems = controls.flatMap(({ file, body }) => {
+  const count = withoutCode(body).trim().split(/\s+/).length;
+  return count < 250 || count > 900 ? [`${file}: ${count} words, expected 250–900`] : [];
+});
+report("R15", lengthProblems.length === 0, lengthProblems.length ? lengthProblems.join("; ") : "control prose is 250–900 words excluding code");
+
+const banned = /\b(revolutionary|robust|seamless|comprehensive|cutting-edge|game-changing|leverage|prevents prompt injection)\b/i;
+const bannedWords = content.flatMap(({ file, raw }) => banned.test(raw) ? [`${file}: ${raw.match(banned)[0]}`] : []);
+report("R16", bannedWords.length === 0, bannedWords.length ? bannedWords.join("; ") : "content contains no banned words");
+
+const unknownControls = content.filter((item) => item.kind === "builds").flatMap(({ file, meta: value }) =>
+  !isList(value.controls) ? [`${file}: controls must be a list`] : value.controls.filter((slug) => !controls.some((control) => control.slug === slug)).map((slug) => `${file}: unknown control ${slug}`));
+report("R17", unknownControls.length === 0, unknownControls.length ? unknownControls.join("; ") : "every build control reference exists");
+
+const caseNames = [...caseStudies, ...studies];
+const copiedFacts = controls.flatMap(({ file, meta: value, body }) => caseNames.filter((item) => item.target !== caseTargets[value.case])
+  .flatMap((item) => [item.brand, item.target].filter(Boolean)).filter((name) => body.toLowerCase().includes(name.toLowerCase())).map((name) => `${file}: contains another case name (${name})`));
+report("R20", copiedFacts.length === 0, copiedFacts.length ? copiedFacts.join("; ") : "control bodies do not name unrelated cases");

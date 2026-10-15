@@ -20,7 +20,7 @@ Red teaming generates adversarial prompts.
 Guardrails filter inputs and outputs.  
 Evals measure model responses.
 
-On paper, it looks comprehensive.
+On paper, it looks complete.
 
 In reality, it’s missing the point.
 

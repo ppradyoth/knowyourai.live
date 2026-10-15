@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { readFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/assessment");
@@ -151,4 +152,52 @@ test("moved blog posts render and stay out of indexing while pending", async ({ 
     await expect(page.locator(".blog-post-title")).toBeVisible();
     await expect(page.locator(".prose")).not.toBeEmpty();
   }
+});
+
+test("guide drafts prerender with evidence, code and review boundaries", async ({ page, request, context }, testInfo) => {
+  const route = "/guide/controls/tool-argument-validation";
+  const errors: string[] = [];
+  page.on("console", (message) => {
+    if (message.type() === "error" && /hydration|did not match|server HTML/i.test(message.text())) errors.push(message.text());
+  });
+  for (const path of ["/guide", "/guide/stage/before-first-users", route]) {
+    const response = await request.get(path);
+    expect(response.ok()).toBeTruthy();
+    const html = await response.text();
+    expect((html.match(/<h1\b/g) ?? []).length).toBe(1);
+    expect(html).not.toMatch(/<div id="root">\s*<\/div>/);
+    if (path !== "/guide") expect(html).toContain('<meta name="robots" content="noindex">');
+  }
+  const sitemap = await (await request.get("/sitemap.xml")).text();
+  const llms = await (await request.get("/llms.txt")).text();
+  const full = await (await request.get("/llms-full.txt")).text();
+  expect(sitemap).not.toContain(route);
+  expect(llms).not.toContain(route);
+  expect(full).not.toContain("Validate every tool call on the server");
+  expect(existsSync(`${process.env.ASSESSMENT_FRONTEND_DIR}/dist${route}.md`)).toBe(false);
+  await page.goto(route);
+  await expect(page.getByRole("heading", { name: "Validate every tool call on the server", exact: true })).toBeVisible();
+  await expect(page.getByText("Draft, not yet reviewed", { exact: false }).first()).toBeVisible();
+  await expect(page.locator("#what-happened-in-production + .gd-case-excerpt")).toBeVisible();
+  await expect(page.locator(".gd-code-language")).toHaveText(["ts", "python"]);
+  const article = await page.locator('script[data-gd-seo]').allTextContents();
+  expect(article.map((text) => JSON.parse(text)["@type"])).toEqual(["TechArticle", "BreadcrumbList"]);
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  const code = await page.locator(".gd-code-block pre").first().textContent();
+  await page.locator(".gd-code-block").first().getByRole("button", { name: "Copy", exact: true }).click();
+  await expect(page.locator(".gd-code-block").first().getByRole("button", { name: "Copied", exact: true })).toBeVisible();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(code);
+  for (const width of [375, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const theme of ["light", "dark"]) {
+      await page.evaluate((value) => { document.documentElement.dataset.theme = value; }, theme);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+      await page.screenshot({ path: testInfo.outputPath(`guide-${theme}-${width}.png`), fullPage: true });
+    }
+  }
+  for (const path of ["/guide/controls/missing-control", "/guide/stage/missing-stage", "/guide/build/missing-build"]) {
+    await page.goto(path);
+    await expect(page.getByRole("heading", { name: "Page not found", exact: true })).toBeVisible();
+  }
+  expect(errors).toEqual([]);
 });

@@ -89,6 +89,52 @@ jobs:
       - name: Check the prerendered tools heading
         working-directory: frontend
         run: grep -c "<h1" dist/tools.html
+      - name: Check guide content lint rejects invalid source
+        working-directory: frontend
+        run: |
+          node --input-type=module <<'JS'
+          import assert from "node:assert/strict";
+          import { readFileSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
+          import { spawnSync } from "node:child_process";
+          import { caseStudies, getStages } from "./dist-ssr/entry-server.js";
+          const file = "content/controls/tool-argument-validation.md";
+          const original = readFileSync(file, "utf8");
+          const reject = (rule) => {
+            const result = spawnSync(process.execPath, ["scripts/verify-dist.mjs"], { encoding: "utf8" });
+            assert.notEqual(result.status, 0, `${rule} accepted invalid content`);
+            assert.ok(result.stdout.includes(`${rule} FAIL:`), result.stdout + result.stderr);
+            console.log(`${rule} negative control passed`);
+          };
+          try {
+            for (const [rule, changed] of [
+              ["R13", original.replace("stage: before-first-users", "stage: missing-stage")],
+              ["R14", original.replace("## The risk", "## Wrong heading")],
+              ["R15", original.slice(0, original.indexOf("## The risk")) + "## The risk\nShort."],
+              ["R16", original + "\nA revolutionary example.\n"],
+              ["R20", original + `\n${caseStudies[0].target}\n`],
+            ]) {
+              writeFileSync(file, changed);
+              reject(rule);
+            }
+          } finally {
+            writeFileSync(file, original);
+          }
+          const fixture = "content/builds/m3-lint-probe.md";
+          mkdirSync("content/builds", { recursive: true });
+          try {
+            writeFileSync(fixture, "---\ntitle: Test\ndescription: Test fixture\ncontrols: [missing-control]\nreview: pending\nupdated: 2026-10-11\n---\nTest\n");
+            reject("R17");
+          } finally {
+            rmSync(fixture);
+          }
+          assert.equal(getStages().length, 5);
+          for (const stage of getStages()) {
+            const words = stage.body.split(/\s+/).length;
+            assert.ok(words >= 150 && words <= 250, `${stage.slug}: ${words} words`);
+            console.log(`${stage.slug}: ${words} words`);
+          }
+          JS
+          npm run verify
       - name: Check Hosting routes in the GitHub runner emulator
         run: |
           cat > "$RUNNER_TEMP/verify-kya-hosting.mjs" <<'JS'

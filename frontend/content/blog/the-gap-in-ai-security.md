@@ -9,7 +9,7 @@ updated: 2026-10-15
 
 # The Gap in AI Security No One Is Solving
 
-AI security today looks comprehensive.
+AI security today looks complete.
 
 We have:
 - Red teaming to find vulnerabilities  
