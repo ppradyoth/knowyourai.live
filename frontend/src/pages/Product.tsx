@@ -13,7 +13,7 @@ export default function Product() {
         description="A complete validation layer for AI systems that must remain aligned to role, domain, and policy constraints."
       />
 
-      <Section title="Platform tools">
+      <Section heading="h2" title="Platform tools">
         <div className="card-grid two-col">
           <div className="card" style={{ padding: 28 }}>
             <p className="eyebrow">Preview</p>
@@ -40,7 +40,7 @@ export default function Product() {
         </div>
       </Section>
 
-      <Section title="Core capabilities">
+      <Section heading="h2" title="Core capabilities">
         <div className="card-grid three-col">
           <Card title="Constraint Builder" description="Define use-case boundaries, allowed capabilities, disallowed actions, and language coverage in one profile." />
           <Card title="Strategy Engine" description="Run RoleTransformation, GradualDrift, and LanguageVariation strategies to expose boundary weakness." />
@@ -51,7 +51,7 @@ export default function Product() {
         </div>
       </Section>
 
-      <Section
+      <Section heading="h2"
         title="Intent Layer (Runtime Enforcement)"
         description="KnowYourAI sits between users and AI systems to enforce behavior in production, not only during pre-release tests."
       >
@@ -62,7 +62,7 @@ export default function Product() {
         </div>
       </Section>
 
-      <Section title="Integrate via API">
+      <Section heading="h2" title="Integrate via API">
         <div className="card" style={{ padding: 28 }}>
           <p style={{ lineHeight: 1.6, maxWidth: "68ch" }}>
             Both IntentScan and IntentEnforce are available as REST APIs. Point your CI pipeline at the scan endpoint, or drop the enforce proxy in front of your production AI.
@@ -74,7 +74,7 @@ export default function Product() {
         </div>
       </Section>
 
-      <Section title="Get started" className="home-final-cta">
+      <Section heading="h2" title="Get started" className="home-final-cta">
         <div className="hero-actions" style={{ marginTop: 8 }}>
           <Link to="/signup" className="button-primary">Create Account</Link>
           <Link to="/login" className="button-secondary">Log In</Link>

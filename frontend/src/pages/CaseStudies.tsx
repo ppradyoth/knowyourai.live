@@ -129,7 +129,7 @@ export default function CaseStudies() {
     <>
       <SEO
         title="Case Studies — AI Security Findings"
-        description={`${caseStudies.length} case studies and ${studies.length} studies from independent testing of production AI systems, each with its disclosure record, vendor response and evidence limits.`}
+        description={`${caseStudies.length} case studies and ${studies.length} studies from independent AI security research, with disclosure records, vendor responses and evidence limits.`}
         path="/case-studies"
       />
       <Section

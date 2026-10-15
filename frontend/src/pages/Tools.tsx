@@ -58,7 +58,7 @@ export default function Tools() {
 
   return (
     <>
-      <SEO title="Tools" description={`${toolCount} free tools for knowing what your AI is, how it behaves under attack, and what it is allowed to do in production. Open source, with the limits of each stated.`} path="/tools" />
+      <SEO title="Tools" description={`${toolCount} free AI security tools, with commands, research links and clear limits for checking models, testing behavior and controlling tool actions.`} path="/tools" />
       <Section
         eyebrow="For developers"
         title="Every tool, what it proves, and where it stops"
@@ -81,13 +81,13 @@ export default function Tools() {
         <section key={stage.id} id={stage.id} className="section tool-stage">
           <header className="section-header">
             <p className="eyebrow">{stage.title}</p>
-            <h1>{stage.question}</h1>
+            <h2>{stage.question}</h2>
           </header>
           {stage.tools.map((tool) => <ToolSection key={tool.slug} tool={tool} />)}
         </section>
       ))}
 
-      <Section title="Early and experimental" description="Listed for completeness. Not ready to rely on.">
+      <Section heading="h2" title="Early and experimental" description="Listed for completeness. Not ready to rely on.">
         <ul className="list">
           {experimental.map((item) => (
             <li key={item.name}><a href={item.href} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 600, color: "var(--primary)" }}>{item.name} ↗</a> {item.note}</li>
@@ -95,7 +95,7 @@ export default function Tools() {
         </ul>
       </Section>
 
-      <Section title="Want someone else to run the tests?" description="The same methods, applied to your system by us, with a findings report at the end.">
+      <Section heading="h2" title="Want someone else to run the tests?" description="The same methods, applied to your system by us, with a findings report at the end.">
         <div className="hero-actions">
           <Link to="/services" className="button-primary">See assessments</Link>
           <Link to="/case-studies" className="button-secondary">Read the research</Link>

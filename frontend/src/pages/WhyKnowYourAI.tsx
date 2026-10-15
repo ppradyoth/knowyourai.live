@@ -16,7 +16,7 @@ export default function WhyKnowYourAI() {
       />
 
       {/* Silent failures */}
-      <Section title="Three failure modes most teams miss" className="why-body">
+      <Section heading="h2" title="Three failure modes most teams miss" className="why-body">
         <div className="card-grid three-col">
           <Card
             title="Silent failures"
@@ -34,7 +34,7 @@ export default function WhyKnowYourAI() {
       </Section>
 
       {/* Cost */}
-      <Section eyebrow="The Cost" title="Drift is expensive" className="why-body">
+      <Section heading="h2" eyebrow="The Cost" title="Drift is expensive" className="why-body">
         <div className="why-risk-grid">
           <div className="card why-risk-card">
             <h3>For compliance teams</h3>
@@ -56,7 +56,7 @@ export default function WhyKnowYourAI() {
       </Section>
 
       {/* Solution */}
-      <Section
+      <Section heading="h2"
         eyebrow="The Solution"
         title="KnowYourAI: systematic AI boundary testing"
         description="Catch drift before production. Enforce boundaries at runtime."
@@ -85,7 +85,7 @@ export default function WhyKnowYourAI() {
       </Section>
 
       {/* Comparison table */}
-      <Section eyebrow="The Difference" title="What sets KnowYourAI apart" className="why-body">
+      <Section heading="h2" eyebrow="The Difference" title="What sets KnowYourAI apart" className="why-body">
         <div className="comparison-table-wrap">
           <table className="comparison-table">
             <thead>
@@ -139,7 +139,7 @@ export default function WhyKnowYourAI() {
       </Section>
 
       {/* USP */}
-      <Section
+      <Section heading="h2"
         eyebrow="Our USP"
         title="The only platform that does both"
         description="Pre-production testing + runtime enforcement = complete AI safety coverage."
@@ -162,7 +162,7 @@ export default function WhyKnowYourAI() {
       </Section>
 
       {/* CTA */}
-      <Section
+      <Section heading="h2"
         eyebrow="Next Step"
         title="See it in action"
         description="Try KnowYourAI on your own API in minutes."

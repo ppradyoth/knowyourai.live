@@ -6,15 +6,16 @@ interface SectionProps {
   description?: string;
   children?: ReactNode;
   className?: string;
+  heading?: "h1" | "h2";
 }
 
-export default function Section({ title, eyebrow, description, children, className = "" }: SectionProps) {
+export default function Section({ title, eyebrow, description, children, className = "", heading: Heading = "h1" }: SectionProps) {
   return (
     <section className={`section ${className}`.trim()}>
       {(eyebrow || description || title) && (
         <header className="section-header">
           {eyebrow && <p className="eyebrow">{eyebrow}</p>}
-          {title && <h1>{title}</h1>}
+          {title && <Heading>{title}</Heading>}
           {description && <p className="section-description">{description}</p>}
         </header>
       )}

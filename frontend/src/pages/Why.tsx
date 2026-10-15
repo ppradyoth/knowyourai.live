@@ -16,7 +16,7 @@ export default function Why() {
         </p>
       </Section>
 
-      <Section title="A pattern we kept seeing" className="why-body">
+      <Section heading="h2" title="A pattern we kept seeing" className="why-body">
         <div className="why-story">
           <p>
             A team launches a domain-specific chatbot. It is designed for one clear job, like handling support requests,
@@ -33,7 +33,7 @@ export default function Why() {
         </div>
       </Section>
 
-      <Section title="This isn't misuse. It's drift." className="why-body">
+      <Section heading="h2" title="This isn't misuse. It's drift." className="why-body">
         <div className="why-story">
           <p>
             AI systems do not naturally enforce intent boundaries over time. Behavior expands through edge cases,
@@ -46,7 +46,7 @@ export default function Why() {
         </div>
       </Section>
 
-      <Section title="Why this matters" className="why-body">
+      <Section heading="h2" title="Why this matters" className="why-body">
         <div className="why-risk-grid">
           <article className="card why-risk-card">
             <h3>Cost leakage</h3>
@@ -67,7 +67,7 @@ export default function Why() {
         </div>
       </Section>
 
-      <Section title="The gap" className="why-body">
+      <Section heading="h2" title="The gap" className="why-body">
         <div className="why-story">
           <p>
             Most AI assurance tooling is built around attacks and perimeter security. That work is essential, but it does
@@ -77,7 +77,7 @@ export default function Why() {
         </div>
       </Section>
 
-      <Section title="KnowYourAI ensures your AI behaves as intended." className="why-body">
+      <Section heading="h2" title="KnowYourAI ensures your AI behaves as intended." className="why-body">
         <div className="why-story">
           <p>
             KnowYourAI uses use-case-driven testing to evaluate real behavior against declared scope. It validates boundaries,
@@ -90,7 +90,7 @@ export default function Why() {
         </div>
       </Section>
 
-      <Section title="AI shouldn't decide what it becomes. You should." className="why-closing" />
+      <Section heading="h2" title="AI shouldn't decide what it becomes. You should." className="why-closing" />
     </>
   );
 }

@@ -12,7 +12,7 @@ interface SEOProps {
 const SITE = "https://knowyourai.live";
 const DEFAULT_TITLE = "KnowYourAI — Know what your AI does, live";
 const DEFAULT_DESC =
-  "Open-source tools, a testing and enforcement platform, and hands-on assessments for teams shipping AI agents. Backed by published security research on production AI systems.";
+  "Open-source AI security tools, hosted testing and enforcement, and hands-on assessments, backed by published research on production AI systems.";
 
 export default function SEO({ title, description, path = "", noindex = false, jsonLd }: SEOProps) {
   const fullTitle = title ? `${title} | KnowYourAI` : DEFAULT_TITLE;

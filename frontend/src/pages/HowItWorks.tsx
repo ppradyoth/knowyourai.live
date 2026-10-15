@@ -13,7 +13,7 @@ export default function HowItWorks() {
       />
 
       {/* IntentScan */}
-      <Section eyebrow="IntentScan" title="Test your AI's boundaries before production" className="why-body">
+      <Section heading="h2" eyebrow="IntentScan" title="Test your AI's boundaries before production" className="why-body">
         <div className="why-story">
           <p>
             You define what your AI is supposed to do — its use case, what it's allowed to handle, and what it should refuse. IntentScan takes that definition and systematically tries to break it, generating realistic adversarial prompts and firing them at your API.
@@ -57,7 +57,7 @@ export default function HowItWorks() {
       </Section>
 
       {/* IntentEnforce */}
-      <Section eyebrow="IntentEnforce" title="Control what your AI does in production" className="why-body">
+      <Section heading="h2" eyebrow="IntentEnforce" title="Control what your AI does in production" className="why-body">
         <div className="why-story">
           <p>
             IntentEnforce sits as a proxy between your users and your AI. Before any prompt reaches your model, it is classified, checked against your policy, and either passed through, blocked, or held for clarification. Your AI only sees requests it is allowed to handle.
@@ -92,7 +92,7 @@ export default function HowItWorks() {
       </Section>
 
       {/* Together */}
-      <Section title="How they work together" className="why-body">
+      <Section heading="h2" title="How they work together" className="why-body">
         <div className="why-story">
           <p>
             The same intent taxonomy that drives IntentScan's probe generation is what IntentEnforce classifies against at runtime. This means the boundary failures you discover during testing are exactly the categories your enforcement layer is designed to catch in production.
@@ -116,7 +116,7 @@ export default function HowItWorks() {
       </Section>
 
       {/* CTA */}
-      <Section title="Try it on your API" description="No setup required. Point IntentScan at any AI endpoint and run a scan in under two minutes." className="why-closing">
+      <Section heading="h2" title="Try it on your API" description="No setup required. Point IntentScan at any AI endpoint and run a scan in under two minutes." className="why-closing">
         <div className="hero-actions">
           <Link to="/intentscan" className="button-primary">Run IntentScan</Link>
           <Link to="/enforce" className="button-secondary">Try IntentEnforce</Link>

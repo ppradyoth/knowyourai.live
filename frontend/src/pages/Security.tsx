@@ -12,7 +12,7 @@ export default function Security() {
         description="A security company should be specific about its own. This is how the hosted platform works today, and what it does not have."
       />
 
-      <Section title="Your model API key">
+      <Section heading="h2" title="Your model API key">
         <div className="card-grid three-col">
           <Card title="Encrypted before storage" description="Your model key is encrypted with AES-256-GCM and bound to your account, so a ciphertext copied to another account does not decrypt." />
           <Card title="Never sent back" description="After you save it, the browser only ever receives the last four characters. You can replace or remove it at any time." />
@@ -20,7 +20,7 @@ export default function Security() {
         </div>
       </Section>
 
-      <Section title="The platform">
+      <Section heading="h2" title="The platform">
         <ul className="list">
           <li>Sign-in is handled by Firebase Authentication, with Google or email and password.</li>
           <li>The database is closed to browsers. Scans, layers and keys are reachable only through the backend, which checks that they belong to you.</li>
@@ -31,7 +31,7 @@ export default function Security() {
         </ul>
       </Section>
 
-      <Section title="What we do not have" description="So you can decide with accurate information.">
+      <Section heading="h2" title="What we do not have" description="So you can decide with accurate information.">
         <ul className="list">
           <li>No SOC 2 or ISO 27001 report.</li>
           <li>No single sign-on, role-based access or audit-log export.</li>

@@ -15,14 +15,14 @@ export default function About() {
         description="KnowYourAI exists so that anyone shipping AI can know what it is, how it behaves under attack, and what it is doing right now."
       />
 
-      <Section title="Vision" description="Every AI release should include measurable behavior assurance by default.">
+      <Section heading="h2" title="Vision" description="Every AI release should include measurable behavior assurance by default.">
         <p className="paragraph">
           We are building the quality and risk infrastructure layer for AI products so teams can move quickly without
           sacrificing security, compliance, or customer trust.
         </p>
       </Section>
 
-      <Section title="Where we are" description="Stated plainly, because a security company should be.">
+      <Section heading="h2" title="Where we are" description="Stated plainly, because a security company should be.">
         <ul className="list">
           <li>Bootstrapped and independent. No outside funding and no revenue yet.</li>
           <li>Open source first: the scanners, benchmarks and labs are public and free to use.</li>
@@ -31,7 +31,7 @@ export default function About() {
         </ul>
       </Section>
 
-      <Section title="Why now?" description="">
+      <Section heading="h2" title="Why now?" description="">
         <div className="mt-8 space-y-6 text-gray-700">
           <p>
             Large language models are being deployed into production at an unprecedented pace. Teams are moving fast,

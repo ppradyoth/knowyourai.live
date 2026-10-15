@@ -116,3 +116,20 @@ test("client navigation updates page metadata and clears noindex", async ({ page
   await expect(page).toHaveTitle("Documentation | KnowYourAI");
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "index, follow");
 });
+
+test("public HTML contains its content and hydrates without mismatches", async ({ page }) => {
+  const response = await page.request.get("/tools");
+  const html = await response.text();
+  expect(html.match(/<h1\b/g)).toHaveLength(1);
+  expect(html).toContain("Every tool, what it proves, and where it stops");
+  expect(html).not.toContain('<div id="root"></div>');
+  const mismatches: string[] = [];
+  const hydrationError = /hydration|hydrating|server HTML|Minified React error #(418|423|425)/i;
+  page.on("pageerror", (error) => { if (hydrationError.test(error.message)) mismatches.push(error.message); });
+  page.on("console", (message) => { if (message.type() === "error" && hydrationError.test(message.text())) mismatches.push(message.text()); });
+  await page.goto("/tools");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+  await page.getByRole("link", { name: "Docs", exact: true }).click();
+  await expect(page).toHaveTitle("Documentation | KnowYourAI");
+  expect(mismatches).toEqual([]);
+});

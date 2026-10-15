@@ -13,7 +13,7 @@ export default function Pricing() {
         description="Assessment Intelligence, IntentScan and IntentEnforce cost nothing to use. They run on your own Claude or Gemini API key, so you pay your model provider directly for the calls you make and nothing to us."
       />
 
-      <Section title="What you get">
+      <Section heading="h2" title="What you get">
         <div className="card-grid three-col">
           <Card title="Assessment Intelligence" description="A draft red-team assessment from your own context">
             <ul className="list"><li>Reports, knowledge-base text, source files and text-based PDFs</li><li>Prioritized scenarios, source references and legitimate controls</li><li>Markdown and JSON exports. Planning does not execute tests.</li></ul>

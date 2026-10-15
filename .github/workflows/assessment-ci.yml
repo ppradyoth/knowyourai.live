@@ -72,6 +72,9 @@ jobs:
       - name: Build production assets
         working-directory: frontend
         run: npm run check
+      - name: Check the prerendered tools heading
+        working-directory: frontend
+        run: grep -c "<h1" dist/tools.html
       - name: Install the isolated browser test harness
         run: |
           mkdir -p "$RUNNER_TEMP/assessment-browser/tests"

@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
+import { publicRoutes } from "../dist-ssr/entry-server.js";
 
 const dist = resolve(fileURLToPath(new URL("../dist/", import.meta.url)));
 const index = join(dist, "index.html");
@@ -39,3 +40,47 @@ if (!script || !script.startsWith(`${dist}${sep}`) || !existsSync(script)) {
   const size = gzipSync(readFileSync(script)).length;
   report("R3", size < 130 * 1024, `entry script is ${(size / 1024).toFixed(2)} KB gzip, must be under 130 KB`);
 }
+
+const routes = publicRoutes();
+const routeFile = (route) => join(dist, route === "/" ? "index.html" : `${route.slice(1)}.html`);
+const missing = routes.filter((route) => !existsSync(routeFile(route)));
+report("R4", missing.length === 0, missing.length ? `missing public pages: ${missing.join(", ")}` : `${routes.length} public route files exist`);
+
+const decode = (value) => value.replace(/&(amp|lt|gt|quot|#39);/g, (entity) => ({
+  "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": '"', "&#39;": "'",
+})[entity]);
+const attribute = (tag, name) => tag.match(new RegExp(`\\b${name}=["']([^"']*)["']`, "i"))?.[1] ?? "";
+
+function meta(html, name) {
+  const tag = [...html.matchAll(/<meta\b[^>]*>/gi)].find(([tag]) => attribute(tag, "name") === name)?.[0];
+  return tag ? decode(attribute(tag, "content")) : "";
+}
+
+const pages = routes.filter((route) => existsSync(routeFile(route))).map((route) => {
+  const html = readFileSync(routeFile(route), "utf8");
+  const title = decode(html.match(/<title>([\s\S]*?)<\/title>/i)?.[1] ?? "");
+  const canonical = [...html.matchAll(/<link\b[^>]*>/gi)].find(([tag]) => attribute(tag, "rel") === "canonical")?.[0];
+  return { route, html, title, description: meta(html, "description"), canonical: canonical ? decode(attribute(canonical, "href")) : "" };
+});
+
+const invalid = pages.flatMap((page) => {
+  const problems = [];
+  if ((page.html.match(/<h1\b/gi) ?? []).length !== 1) problems.push("exactly one h1 required");
+  if (!page.title.trim()) problems.push("empty title");
+  if (page.description.length < 50 || page.description.length > 160) problems.push(`description length ${page.description.length}, expected 50–160`);
+  if (page.canonical !== `https://knowyourai.live${page.route}`) problems.push("canonical does not match route");
+  return problems.map((problem) => `${page.route}: ${problem}`);
+});
+report("R5", invalid.length === 0, invalid.length ? invalid.join("; ") : "public pages have one h1 and valid title, description and canonical");
+
+const duplicates = ["title", "description"].flatMap((field) => pages
+  .filter((page, index) => pages.findIndex((other) => other[field] === page[field]) !== index)
+  .map((page) => `${page.route}: duplicate ${field}`));
+report("R6", duplicates.length === 0, duplicates.length ? duplicates.join("; ") : "all public titles and descriptions are unique");
+
+const shells = ["404.html", "app.html"].filter((name) => !existsSync(join(dist, name))
+  || !meta(readFileSync(join(dist, name), "utf8"), "robots").split(/,\s*/).includes("noindex"));
+report("R7", shells.length === 0, shells.length ? `missing noindex page: ${shells.join(", ")}` : "404.html and app.html exist with noindex");
+
+const empty = pages.filter((page) => !page.html.includes('<div id="root">') || /<div id="root">\s*<\/div>/.test(page.html));
+report("R8", empty.length === 0, empty.length ? `empty public root: ${empty.map((page) => page.route).join(", ")}` : "every public root contains prerendered content");

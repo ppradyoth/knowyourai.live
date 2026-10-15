@@ -50,7 +50,7 @@ export default function Services() {
     <>
       <SEO
         title="AI Red-Teaming Services"
-        description="Expert adversarial testing for AI systems. Prompt injection, agent hijacking, data exfiltration, and behavioral drift assessments by experienced security researchers."
+        description="Hands-on AI security assessments covering prompt injection, agent hijacking, data exfiltration and behavior boundaries."
         path="/services"
       />
       <Section
@@ -87,7 +87,7 @@ export default function Services() {
         </div>
       </Section>
 
-      <Section
+      <Section heading="h2"
         title="Why work with us"
       >
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24 }}>

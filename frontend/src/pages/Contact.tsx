@@ -11,7 +11,7 @@ export default function Contact() {
         description="Our team supports evaluations, architecture reviews, and enterprise onboarding."
       />
 
-      <Section title="Get in touch">
+      <Section heading="h2" title="Get in touch">
         <div className="card-grid two-col">
           <article className="card">
             <h3>Request an Assessment</h3>

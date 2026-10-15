@@ -5,11 +5,15 @@ import App from "./App";
 import ScrollToTop from "./components/ScrollToTop";
 import "./styles.css";
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+const root = document.getElementById("root") as HTMLElement;
+const app = (
   <React.StrictMode>
     <BrowserRouter>
       <ScrollToTop />
       <App />
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
+
+if (root.hasChildNodes()) ReactDOM.hydrateRoot(root, app);
+else ReactDOM.createRoot(root).render(app);

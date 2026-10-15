@@ -12,7 +12,7 @@ export default function UseCases() {
         description="Behavior QA for regulated, customer-facing, and mission-critical AI experiences."
       />
 
-      <Section title="Industry scenarios">
+      <Section heading="h2" title="Industry scenarios">
         <div className="card-grid three-col">
           <Card
             title="Banking Chatbots"
@@ -29,7 +29,7 @@ export default function UseCases() {
         </div>
       </Section>
 
-      <Section title="Team outcomes">
+      <Section heading="h2" title="Team outcomes">
         <div className="card-grid two-col">
           <Card
             title="Product Teams"
@@ -42,7 +42,7 @@ export default function UseCases() {
         </div>
       </Section>
 
-      <Section title="Intent Layer examples" description="Use runtime controls to keep AI within policy boundaries.">
+      <Section heading="h2" title="Intent Layer examples" description="Use runtime controls to keep AI within policy boundaries.">
         <div className="card-grid three-col">
           <Card
             title="Prevent chatbot misuse"

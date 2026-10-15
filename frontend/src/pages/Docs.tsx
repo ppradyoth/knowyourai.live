@@ -63,19 +63,19 @@ export default function Docs() {
         description="Connect your AI endpoint, define behavior boundaries, and run structured scans."
       />
 
-      <Section title="POST /scan request format">
+      <Section heading="h2" title="POST /scan request format">
         <pre>{requestExample}</pre>
       </Section>
 
-      <Section title="Response format">
+      <Section heading="h2" title="Response format">
         <pre>{responseExample}</pre>
       </Section>
 
-      <Section title="POST /enforce request format">
+      <Section heading="h2" title="POST /enforce request format">
         <pre>{enforceRequestExample}</pre>
       </Section>
 
-      <Section title="/enforce response format">
+      <Section heading="h2" title="/enforce response format">
         <pre>{enforceResponseExample}</pre>
       </Section>
 
@@ -88,7 +88,7 @@ export default function Docs() {
         <h3 style={{ marginTop: 24 }}>POST /assessments/extract-pdf</h3><p className="paragraph">Send PDF bytes with Content-Type: application/pdf and the same authentication. Returns extracted content for review before planning. Maximum 2 MB and 40 pages. Encrypted PDFs, image-only PDFs and extracted text over 60,000 characters are rejected.</p>
       </section>
 
-      <Section
+      <Section heading="h2"
         title="Proxy integration"
         description="Route production traffic through the KnowYourAI enforcement layer before it reaches your target model endpoint."
       >

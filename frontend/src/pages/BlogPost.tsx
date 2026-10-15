@@ -48,7 +48,7 @@ export default function BlogPost() {
 
   return (
     <section className="section">
-      <SEO title={meta.title} description={meta.excerpt} path={`/blog/${slug}`} />
+      <SEO title={meta.title} description={meta.excerpt && `${meta.excerpt} Read the full article.`} path={`/blog/${slug}`} />
       <div className="blog-post-wrap">
         <Link to="/blog" className="blog-back-link">← Blog</Link>
 
@@ -63,7 +63,7 @@ export default function BlogPost() {
         </header>
 
         <div className="prose">
-          <ReactMarkdown>{body}</ReactMarkdown>
+          <ReactMarkdown components={{ h1: "h2" }}>{body}</ReactMarkdown>
         </div>
       </div>
     </section>

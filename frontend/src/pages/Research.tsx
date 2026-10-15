@@ -20,7 +20,7 @@ export default function Research() {
         className="hero-section"
       />
 
-      <Section title="Publications">
+      <Section heading="h2" title="Publications">
         <div style={{ display: "grid", gap: 16 }}>
           {publications.map((pub) => (
             <article key={pub.title} className="card">
@@ -36,7 +36,7 @@ export default function Research() {
         </div>
       </Section>
 
-      <Section
+      <Section heading="h2"
         title="Upstream contributions"
         description={`${counts.merged} merged, ${counts.open} open${counts.closed ? `, ${counts.closed} closed without merge` : ""}. Status recorded ${checked}; each link shows the current state.`}
       >
@@ -59,7 +59,7 @@ export default function Research() {
         </div>
       </Section>
 
-      <Section title="Independent use" description="The Prompt Injection CTF was adopted by an engineer at Apiiro as the fixtures for a published nine-model study. The original Jack & Jill vulnerability was confirmed by its founder.">
+      <Section heading="h2" title="Independent use" description="The Prompt Injection CTF was adopted by an engineer at Apiiro as the fixtures for a published nine-model study. The original Jack & Jill vulnerability was confirmed by its founder.">
         <div className="hero-actions">
           <Link to="/case-studies" className="button-primary">Read the case studies</Link>
           <Link to="/tools" className="button-secondary">Browse the tools</Link>

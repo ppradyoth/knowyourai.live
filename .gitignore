@@ -18,6 +18,7 @@ build/
 # Node / Frontend
 node_modules/
 frontend/dist/
+frontend/dist-ssr/
 frontend/.vite/
 *.tsbuildinfo
 
