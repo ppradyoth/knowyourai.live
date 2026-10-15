@@ -55,7 +55,6 @@ export default function App() {
           <Route path="pricing" element={<Pricing />} />
           <Route path="why" element={<Why />} />
           <Route path="why-knowyourai" element={<WhyKnowYourAI />} />
-          <Route path="why-akrivon" element={<Navigate to="/why-knowyourai" replace />} />
           <Route path="whats-unique" element={<WhatsUnique />} />
           <Route path="services" element={<Services />} />
           <Route path="request" element={<RequestAssessment />} />

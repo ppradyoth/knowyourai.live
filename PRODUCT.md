@@ -1,37 +1,38 @@
 # Product
 
-## Register
-
-brand
-
 ## Users
 
-Security-conscious engineering leaders, CTOs, and AI product teams at companies deploying LLM-powered features (chatbots, agents, copilots). They need external validation that their AI systems can't be manipulated — but lack in-house red-teaming expertise. They arrive skeptical, time-constrained, and looking for proof of competence before engaging.
+A founder-engineer or early hire at a 2–15 person startup. You build on the Claude or OpenAI API, write most code with a coding agent, have no security person, and will spend an hour on safety, not a week.
+
+| Moment | What you need |
+|---|---|
+| Building a feature | Code for your stack |
+| About to launch | A short prioritised list |
+| A scare | A way to check whether you are exposed in five minutes |
+| First enterprise deal | Words and evidence to unblock the deal |
+| Setting up coding agents | A config to copy |
 
 ## Product Purpose
 
-Akrivon AI is an AI red-teaming consultancy. We find vulnerabilities in AI systems — prompt injection, jailbreaks, data exfiltration, hallucination exploitation, agent manipulation — through hands-on adversarial testing. The website exists to attract clients by demonstrating proven expertise through real case studies and clear service offerings. Success: a qualified lead fills out the engagement request form.
+Make knowyourai.live the place a small startup's developers go to learn how to build an AI product safely, and make them find it through search, LLM answers, GitHub and their own coding agents.
+
+Ship your AI product safely. The guide for teams with no security team.
 
 ## Brand Personality
 
-Authoritative. Precise. Unflinching.
-
-We speak like senior security researchers writing for peers — direct, evidence-backed, no fluff. Confidence comes from demonstrated results (real findings, named targets), not marketing superlatives. The tone is calm expertise, not aggressive hacker culture.
+Plain, specific, second person. Short sentences. Lead with what to do, then explain why in one or two sentences with a real case.
 
 ## Anti-references
 
-- Hacker aesthetic: no terminal green, no Matrix rain, no "we hack things" edginess, no skull-and-crossbones energy
-- Generic SaaS templates: no gradient blob heroes, no stock illustrations of shields, no "AI-powered" buzzword soup
-- Overly corporate: no stock photos of handshakes, no compliance-speak, no blue-gray enterprise blandness
+No hype words. No compliance language. No fear selling. Write for small startup teams, not large enterprises or compliance teams.
 
 ## Design Principles
 
-1. **Show, don't claim** — Every credibility signal is backed by a real finding, a named case study, or a concrete methodology. No unsubstantiated "trusted by" or "industry-leading."
-2. **Clarity is confidence** — Clean hierarchy, generous whitespace, precise language. The design itself should feel like the work we do: meticulous and purposeful.
-3. **Evidence-first** — Case studies, methodology breakdowns, and real attack narratives are the primary content. The work speaks louder than the pitch.
-4. **Respect the reader's time** — No scroll-padding, no filler sections. Every section earns its place by moving the reader closer to understanding what we do and why it matters.
-5. **Quiet authority** — The visual language should feel like Stripe meets a top-tier security consultancy. Professional, modern, technically credible without trying too hard.
+- Every page serves at least one of the five moments above.
+- Every page has a section titled "Know the limit" explaining what it does not cover.
+- Never claim a control prevents prompt injection. Say what it limits.
+- Order calls to action: next guide step, free tool, then one quiet line for a paid assessment.
 
-## Accessibility & Inclusion
+## Accessibility
 
-WCAG AA compliance. Minimum 4.5:1 contrast for body text, 3:1 for large text. Keyboard navigable. Reduced motion support. No information conveyed by color alone.
+No signup wall anywhere in the guide or checklist. Use plain, specific language and short sentences so you can act on each step within the time you have.

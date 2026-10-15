@@ -9,8 +9,6 @@ The platform has two parts:
 
 Both are free. You sign in, add your own Claude or Gemini key, and the platform uses that key for its model calls. Keys are stored encrypted (AES-GCM) and are never returned by the API.
 
-This project was previously called AkrivonAI.
-
 ---
 
 ## What is on the site
