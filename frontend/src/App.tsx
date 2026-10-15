@@ -3,11 +3,11 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
-import Services from "./pages/Services";
-import CaseStudies from "./pages/CaseStudies";
-import RequestAssessment from "./pages/RequestAssessment";
 
 const About = lazy(() => import("./pages/About"));
+const Services = lazy(() => import("./pages/Services"));
+const CaseStudies = lazy(() => import("./pages/CaseStudies"));
+const RequestAssessment = lazy(() => import("./pages/RequestAssessment"));
 const Assessment = lazy(() => import("./pages/Assessment"));
 const Architecture = lazy(() => import("./pages/Architecture"));
 const Blog = lazy(() => import("./pages/Blog"));

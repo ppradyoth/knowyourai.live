@@ -37,9 +37,5 @@ if (!script || !script.startsWith(`${dist}${sep}`) || !existsSync(script)) {
   report("R3", false, "entry module referenced by dist/index.html must exist inside dist");
 } else {
   const size = gzipSync(readFileSync(script)).length;
-  if (size < 130 * 1024) {
-    report("R3", true, `entry script is ${(size / 1024).toFixed(2)} KB gzip, under 130 KB`);
-  } else {
-    console.log(`R3 WARN: entry script is ${(size / 1024).toFixed(2)} KB gzip, must be under 130 KB in M1.2`);
-  }
+  report("R3", size < 130 * 1024, `entry script is ${(size / 1024).toFixed(2)} KB gzip, must be under 130 KB`);
 }

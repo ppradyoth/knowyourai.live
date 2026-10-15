@@ -1,16 +1,30 @@
 import { useEffect, useState } from "react";
-import { onAuthStateChanged, type User } from "firebase/auth";
-import { auth } from "../firebase";
+import type { User } from "firebase/auth";
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    return onAuthStateChanged(auth, (u) => {
-      setUser(u);
-      setLoading(false);
-    });
+    let active = true;
+    let unsubscribe: (() => void) | undefined;
+
+    void (async () => {
+      const [{ auth }, { onAuthStateChanged }] = await Promise.all([
+        import("../firebase"),
+        import("firebase/auth"),
+      ]);
+      if (!active) return;
+      unsubscribe = onAuthStateChanged(auth, (u) => {
+        setUser(u);
+        setLoading(false);
+      });
+    })();
+
+    return () => {
+      active = false;
+      unsubscribe?.();
+    };
   }, []);
 
   const getToken = async () => {

@@ -71,7 +71,7 @@ jobs:
         run: npm ci
       - name: Build production assets
         working-directory: frontend
-        run: npm run build
+        run: npm run check
       - name: Install the isolated browser test harness
         run: |
           mkdir -p "$RUNNER_TEMP/assessment-browser/tests"

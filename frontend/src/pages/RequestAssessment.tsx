@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../firebase";
 import Section from "../components/Section";
 import SEO from "../components/SEO";
 
@@ -18,6 +16,10 @@ export default function RequestAssessment() {
     const data = new FormData(form);
 
     try {
+      const [{ db }, { collection, addDoc, serverTimestamp }] = await Promise.all([
+        import("../firebase"),
+        import("firebase/firestore"),
+      ]);
       await addDoc(collection(db, "assessment_requests"), {
         name: data.get("name"),
         email: data.get("email"),
