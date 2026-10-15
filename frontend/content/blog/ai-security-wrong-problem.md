@@ -3,6 +3,8 @@ title: "AI Security is Solving the Wrong Problem"
 author: "Pradyoth P"
 date: "2026-05-04"
 excerpt: "The industry is focused on prompts and outputs. The real problem lies in intent."
+review: pending
+updated: 2026-10-15
 ---
 
 # AI Security is Solving the Wrong Problem

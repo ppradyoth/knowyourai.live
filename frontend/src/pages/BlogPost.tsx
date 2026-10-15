@@ -1,23 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import SEO from "../components/SEO";
-
-const postFiles = import.meta.glob("../blog/posts/*.md", {
-  query: "?raw",
-  import: "default",
-  eager: true,
-});
-
-function extractMeta(markdown: string) {
-  const match = markdown.match(/---([\s\S]*?)---/);
-  if (!match) return {};
-  const meta: Record<string, string> = {};
-  match[1].split("\n").forEach((line) => {
-    const [key, ...rest] = line.split(":");
-    if (key && rest.length) meta[key.trim()] = rest.join(":").trim().replace(/"/g, "");
-  });
-  return meta;
-}
+import { getPost } from "../lib/content";
 
 function readingTime(text: string) {
   return `${Math.ceil(text.trim().split(/\s+/).length / 200)} min read`;
@@ -26,11 +10,9 @@ function readingTime(text: string) {
 export default function BlogPost() {
   const { slug } = useParams();
 
-  const postEntry = Object.entries(postFiles).find(([path]) =>
-    path.includes(`${slug}.md`)
-  );
+  const post = getPost(slug);
 
-  if (!postEntry) {
+  if (!post) {
     return (
       <section className="section">
         <SEO title="Post not found" description="This blog post could not be found. Browse the KnowYourAI blog for other posts." path={`/blog/${slug}`} noindex />
@@ -42,13 +24,11 @@ export default function BlogPost() {
     );
   }
 
-  const raw = postEntry[1] as string;
-  const meta = extractMeta(raw);
-  const body = raw.replace(/---[\s\S]*?---/, "").trim();
+  const { meta, body } = post;
 
   return (
     <section className="section">
-      <SEO title={meta.title} description={meta.excerpt && `${meta.excerpt} Read the full article.`} path={`/blog/${slug}`} />
+      <SEO title={meta.title} description={`${meta.excerpt} Read the full article.`} path={`/blog/${slug}`} noindex={meta.review === "pending"} />
       <div className="blog-post-wrap">
         <Link to="/blog" className="blog-back-link">← Blog</Link>
 
@@ -57,7 +37,7 @@ export default function BlogPost() {
           <p className="blog-card-meta">
             {meta.date && <span>{meta.date}</span>}
             {meta.author && <span> &bull; {meta.author}</span>}
-            <span> &bull; {readingTime(raw)}</span>
+            <span> &bull; {readingTime(body)}</span>
           </p>
           {meta.excerpt && <p className="blog-post-excerpt">{meta.excerpt}</p>}
         </header>

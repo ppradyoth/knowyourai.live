@@ -3,6 +3,8 @@ title: "Why Prompt-Based Defenses Will Fail"
 author: "Pradyoth P"
 date: "2026-05-04"
 excerpt: "You can filter prompts. You can’t filter intent."
+review: pending
+updated: 2026-10-15
 ---
 
 # Why Prompt-Based Defenses Will Fail

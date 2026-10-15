@@ -5,6 +5,7 @@ import App from "./App";
 import { SeoContext, type SeoData } from "./lib/seoContext";
 
 export { publicRoutes, appShellRoutes } from "./routes";
+export { getControls, getStages, getBuilds, getPosts } from "./lib/content";
 
 export async function render(url: string): Promise<{ html: string; seo: SeoData | null }> {
   return new Promise((resolve, reject) => {

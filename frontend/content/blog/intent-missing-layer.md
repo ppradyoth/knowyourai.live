@@ -3,6 +3,8 @@ title: "The Missing Layer in AI Systems: Intent"
 author: "Pradyoth P"
 date: "2026-05-04"
 excerpt: "Every AI system has a boundary. Most just don’t know where it is."
+review: pending
+updated: 2026-10-15
 ---
 
 # The Missing Layer in AI Systems: Intent

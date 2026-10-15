@@ -1,7 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { publicRoutes, render } from "../dist-ssr/entry-server.js";
+import { publicRoutes, render, getControls, getStages, getBuilds, getPosts } from "../dist-ssr/entry-server.js";
 
 const dist = fileURLToPath(new URL("../dist/", import.meta.url));
 const template = readFileSync(join(dist, "index.html"), "utf8");
@@ -59,8 +59,14 @@ writeFileSync(join(dist, "404.html"), template.replace("<!--head-->", () => head
   .replace('<div id="root"></div>', () => `<div id="root">${notFound.html}</div>`));
 
 const indexable = records.filter((record) => !record.noindex);
+const content = new Map([
+  ...getControls().map((item) => [`/guide/controls/${item.slug}`, item]),
+  ...getStages().map((item) => [`/guide/stage/${item.slug}`, item]),
+  ...getBuilds().map((item) => [`/guide/build/${item.slug}`, item]),
+  ...getPosts().map((item) => [`/blog/${item.slug}`, item]),
+]);
 const urls = indexable.map((record) => {
-  const updated = record.jsonLd?.find((data) => typeof data.dateModified === "string")?.dateModified;
+  const updated = content.get(record.route)?.meta.updated;
   return `  <url><loc>${escape(`${site}${record.route}`)}</loc>${updated ? `<lastmod>${escape(updated)}</lastmod>` : ""}</url>`;
 });
 writeFileSync(join(dist, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`);

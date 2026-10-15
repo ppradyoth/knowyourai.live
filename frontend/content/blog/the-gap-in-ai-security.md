@@ -3,6 +3,8 @@ title: "The Gap in AI Security No One Is Solving"
 author: "Pradyoth P"
 date: "2026-05-04"
 excerpt: "Red teaming, evals, and guardrails dominate AI security today. But all three miss the same fundamental problem."
+review: pending
+updated: 2026-10-15
 ---
 
 # The Gap in AI Security No One Is Solving

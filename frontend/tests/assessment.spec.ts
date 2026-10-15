@@ -133,3 +133,22 @@ test("public HTML contains its content and hydrates without mismatches", async (
   await expect(page).toHaveTitle("Documentation | KnowYourAI");
   expect(mismatches).toEqual([]);
 });
+
+test("moved blog posts render and stay out of indexing while pending", async ({ page }) => {
+  await page.goto("/blog");
+  const posts = page.locator(".blog-card-title");
+  await expect(posts).toHaveCount(4);
+  const links = await page.locator(".blog-card-link").evaluateAll((links) => links.map((link) => link.getAttribute("href")!));
+  const sitemap = await (await page.request.get("/sitemap.xml")).text();
+  const llms = await (await page.request.get("/llms.txt")).text();
+  for (const path of links) {
+    const html = await (await page.request.get(path)).text();
+    expect(html).toContain('content="noindex"');
+    expect(html).not.toContain('<div id="root"></div>');
+    expect(sitemap).not.toContain(`https://knowyourai.live${path}</loc>`);
+    expect(llms).not.toContain(`https://knowyourai.live${path})`);
+    await page.goto(path);
+    await expect(page.locator(".blog-post-title")).toBeVisible();
+    await expect(page.locator(".prose")).not.toBeEmpty();
+  }
+});

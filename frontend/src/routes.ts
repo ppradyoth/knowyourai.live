@@ -1,4 +1,4 @@
-const postFiles = import.meta.glob("./blog/posts/*.md", { query: "?raw", import: "default", eager: true });
+import { getPosts } from "./lib/content";
 
 export function publicRoutes(): string[] {
   return [
@@ -6,7 +6,7 @@ export function publicRoutes(): string[] {
     "/how-it-works", "/request", "/pricing", "/assessment", "/about", "/contact",
     "/security", "/ethics", "/terms", "/privacy", "/cookies", "/product",
     "/architecture", "/use-cases", "/why", "/why-knowyourai", "/whats-unique",
-    ...Object.keys(postFiles).map((file) => `/blog/${file.split("/").pop()!.replace(/\.md$/, "")}`),
+    ...getPosts().map((post) => `/blog/${post.slug}`),
   ];
 }
 

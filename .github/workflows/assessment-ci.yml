@@ -69,6 +69,20 @@ jobs:
       - name: Install locked application dependencies
         working-directory: frontend
         run: npm ci
+      - name: Check missing frontmatter fails the build
+        working-directory: frontend
+        run: |
+          post=content/blog/ai-security-wrong-problem.md
+          cp "$post" "$RUNNER_TEMP/kya-original-post.md"
+          trap 'cp "$RUNNER_TEMP/kya-original-post.md" "$post"' EXIT
+          sed -i '/^title:/d' "$post"
+          if npm run build > "$RUNNER_TEMP/kya-invalid-frontmatter.log" 2>&1; then
+            echo "Build unexpectedly accepted a post without its required title"
+            exit 1
+          fi
+          grep -F "ai-security-wrong-problem.md: title is required" "$RUNNER_TEMP/kya-invalid-frontmatter.log"
+          cp "$RUNNER_TEMP/kya-original-post.md" "$post"
+          trap - EXIT
       - name: Build production assets
         working-directory: frontend
         run: npm run check
