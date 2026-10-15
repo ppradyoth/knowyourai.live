@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
+import SEO from "../components/SEO";
 
 export default function WhatsUnique() {
   const navigate = useNavigate();
 
   return (
     <div style={{ maxWidth: "860px", margin: "0 auto", padding: "64px 24px", lineHeight: 1.7 }}>
+      <SEO title="What Makes KnowYourAI Different" description="Read how KnowYourAI approaches AI behavior boundaries with IntentScan for testing and IntentEnforce for runtime intent policies." path="/whats-unique" />
 
       {/* Hero */}
       <section style={{ marginBottom: "80px" }}>

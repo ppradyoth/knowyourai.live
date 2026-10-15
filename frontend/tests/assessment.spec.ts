@@ -102,3 +102,17 @@ test("empty and binary uploads give a readable error without adding a source", a
   await expect(page.getByRole("alert")).toContainText("not UTF-8 text");
   await expect(page.getByRole("button", { name: /^Previous assessments/ })).toHaveText(/Previous assessments\s*0/);
 });
+
+test("client navigation updates page metadata and clears noindex", async ({ page }) => {
+  await page.getByRole("link", { name: "Docs", exact: true }).click();
+  await expect(page).toHaveTitle("Documentation | KnowYourAI");
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://knowyourai.live/docs");
+  await page.getByRole("link", { name: "Use Cases", exact: true }).click();
+  await expect(page).toHaveTitle("Use Cases | KnowYourAI");
+  await page.goto("/404.html");
+  await expect(page).toHaveTitle("Page not found | KnowYourAI");
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex");
+  await page.getByRole("link", { name: "Docs", exact: true }).click();
+  await expect(page).toHaveTitle("Documentation | KnowYourAI");
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "index, follow");
+});

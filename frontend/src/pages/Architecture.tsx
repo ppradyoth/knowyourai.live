@@ -1,9 +1,11 @@
 import Card from "../components/Card";
 import Section from "../components/Section";
+import SEO from "../components/SEO";
 
 export default function Architecture() {
   return (
     <>
+      <SEO title="Architecture" description="Explore how KnowYourAI's frontend, API and scan stages fit together, from policy configuration to violation reports." path="/architecture" />
       <Section
         eyebrow="Architecture"
         title="Composable architecture for AI behavior QA"

@@ -1,9 +1,11 @@
 import Card from "../components/Card";
 import Section from "../components/Section";
+import SEO from "../components/SEO";
 
 export default function UseCases() {
   return (
     <>
+      <SEO title="Use Cases" description="Explore use cases for AI behavior testing, from customer-facing assistants to agents, and the boundaries each system needs to define." path="/use-cases" />
       <Section
         eyebrow="Use Cases"
         title="Where KnowYourAI delivers immediate value"

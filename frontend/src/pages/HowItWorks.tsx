@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import Section from "../components/Section";
+import SEO from "../components/SEO";
 
 export default function HowItWorks() {
   return (
     <>
+      <SEO title="How It Works" description="See how IntentScan tests an AI endpoint and how IntentEnforce applies intent policies, with the steps for using each hosted tool." path="/how-it-works" />
       <Section
         eyebrow="How It Works"
         title="Two products. One consistent model of AI behavior."

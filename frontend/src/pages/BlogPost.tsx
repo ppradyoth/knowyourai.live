@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import SEO from "../components/SEO";
 
 const postFiles = import.meta.glob("../blog/posts/*.md", {
   query: "?raw",
@@ -32,6 +33,7 @@ export default function BlogPost() {
   if (!postEntry) {
     return (
       <section className="section">
+        <SEO title="Post not found" description="This blog post could not be found. Browse the KnowYourAI blog for other posts." path={`/blog/${slug}`} noindex />
         <p className="paragraph">Post not found.</p>
         <Link to="/blog" className="button-secondary" style={{ marginTop: "16px", display: "inline-flex" }}>
           ← Back to Blog
@@ -46,6 +48,7 @@ export default function BlogPost() {
 
   return (
     <section className="section">
+      <SEO title={meta.title} description={meta.excerpt} path={`/blog/${slug}`} />
       <div className="blog-post-wrap">
         <Link to="/blog" className="blog-back-link">← Blog</Link>
 

@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import Card from "../components/Card";
 import Section from "../components/Section";
+import SEO from "../components/SEO";
 
 export default function WhyKnowYourAI() {
   return (
     <>
+      <SEO title="Why KnowYourAI" description="Explore the difference between intended AI behavior and production behavior, and how KnowYourAI approaches testing those boundaries." path="/why-knowyourai" />
       {/* Hero */}
       <Section
         eyebrow="The Problem"

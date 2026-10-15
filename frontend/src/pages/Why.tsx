@@ -1,8 +1,10 @@
 import Section from "../components/Section";
+import SEO from "../components/SEO";
 
 export default function Why() {
   return (
     <>
+      <SEO title="Why AI Behavior Boundaries Matter" description="Read about behavior boundaries in AI systems and the reasons to define, test, and monitor what an assistant is allowed to do." path="/why" />
       <Section
         eyebrow="Why KnowYourAI"
         title="AI doesn't break the way you think."
