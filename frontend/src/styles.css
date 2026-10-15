@@ -1949,3 +1949,9 @@ pre.terminal-body { padding: 18px; }
   .gd-assessment-step-nav button { padding: 12px; gap: 8px; }
   .gd-assessment-tool { padding: 14px; }
 }
+
+.gd-markdown :is(h2, h3) { scroll-margin-top: 110px; }
+.gd-markdown .gd-code-block { position: static; margin-block: 24px; min-width: 0; }
+.gd-markdown .gd-code-block .terminal-body { margin: 0; overflow-x: auto; background: transparent; }
+.gd-markdown .gd-code-block code { padding: 0; color: inherit; background: transparent; border: 0; font-size: inherit; white-space: pre; }
+.gd-code-language { color: #cbd5e1; font: 12px "IBM Plex Mono", monospace; }

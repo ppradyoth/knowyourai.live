@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
+import Markdown from "../components/Markdown";
 import SEO from "../components/SEO";
 import { getPost } from "../lib/content";
 
@@ -42,9 +42,7 @@ export default function BlogPost() {
           {meta.excerpt && <p className="blog-post-excerpt">{meta.excerpt}</p>}
         </header>
 
-        <div className="prose">
-          <ReactMarkdown components={{ h1: "h2" }}>{body}</ReactMarkdown>
-        </div>
+        <Markdown>{body}</Markdown>
       </div>
     </section>
   );

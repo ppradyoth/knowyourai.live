@@ -1,25 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Section from "../components/Section";
 import SEO from "../components/SEO";
+import CopyButton from "../components/CopyButton";
 import { experimental, toolStages, type Tool } from "../data/tools";
 
 const toolCount = toolStages.reduce((sum, stage) => sum + stage.tools.length, 0);
 
 function Terminal({ command, output }: { command: string; output?: string }) {
-  const [copied, setCopied] = useState(false);
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(command);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1600);
-    } catch {}
-  };
   return (
     <div className="terminal">
       <div className="terminal-bar">
         <span className="terminal-dots" aria-hidden="true"><i /><i /><i /></span>
-        <button type="button" className="terminal-copy" onClick={copy} aria-live="polite">{copied ? "Copied" : "Copy"}</button>
+        <CopyButton text={command} />
       </div>
       <pre className="terminal-body"><code>{command.split("\n").map((line) => `$ ${line}`).join("\n")}{output && <span className="terminal-output">{`\n\n${output}`}</span>}</code></pre>
     </div>
