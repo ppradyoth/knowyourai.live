@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Section from "../components/Section";
 import SEO from "../components/SEO";
 
@@ -53,6 +54,13 @@ const enforceResponseExample = `{
   }
 }`;
 
+const ciExample = `curl --fail --silent --show-error \\
+  --request POST 'https://knowyourai.live/api/scan' \\
+  --header "Authorization: Bearer $KYA_API_TOKEN" \\
+  --header 'Content-Type: application/json' \\
+  --data @scan-request.json \\
+  --output scan-submission.json`;
+
 export default function Docs() {
   return (
     <>
@@ -63,15 +71,29 @@ export default function Docs() {
         description="Connect your AI endpoint, define behavior boundaries, and run structured scans."
       />
 
-      <Section heading="h2" title="POST /scan request format">
+      <Section heading="h2" title="Quickstart: three steps">
+        <ol className="list">
+          <li><strong>Connect your account.</strong> <Link to="/login">Sign in</Link> and save your own Claude or Gemini key under <Link to="/account">Account</Link>. Create a platform API key from the <Link to="/dashboard">dashboard</Link> for authenticated API calls.</li>
+          <li><strong>Define the boundary and start a scan.</strong> Set the target API URL, use case, allowed and disallowed capabilities, languages and test count. Use the scan request below, with 1–200 tests, and submit it to <code>POST /api/scan</code>.</li>
+          <li><strong>Collect the result.</strong> Scans run in the background. The submission returns a scan ID; use it with <code>GET /api/scans/&#123;id&#125;</code> to fetch the scan and <code>GET /api/scans/&#123;id&#125;/report.pdf</code> to download the report.</li>
+        </ol>
+      </Section>
+
+      <Section heading="h2" title="Authentication">
+        <p className="paragraph">The production API base is <code>https://knowyourai.live/api</code>. Send a Firebase ID token or a platform API key in the Authorization header. Platform API keys start with <code>ak_live_</code>; your Claude or Gemini provider key is a separate credential used for model calls.</p>
+        <pre>{"Authorization: Bearer <token>"}</pre>
+        <p className="paragraph">Every endpoint except <code>/health</code> and <code>/proxy/&#123;layer_id&#125;</code> requires this header. The free plan allows 10 requests per minute and 1,000 tests per month.</p>
+      </Section>
+
+      <Section heading="h2" title="POST /scan request format" description="Submit this JSON to /api/scan. The response acknowledges the background scan with an ID; it is not the completed result shown below.">
         <pre>{requestExample}</pre>
       </Section>
 
-      <Section heading="h2" title="Response format">
+      <Section heading="h2" title="Completed scan result example" description="The completed result includes a summary and details for each reported violation.">
         <pre>{responseExample}</pre>
       </Section>
 
-      <Section heading="h2" title="POST /enforce request format">
+      <Section heading="h2" title="POST /enforce request format" description="Submit this JSON to /api/enforce to classify and route a single prompt using the supplied configuration.">
         <pre>{enforceRequestExample}</pre>
       </Section>
 
@@ -89,10 +111,30 @@ export default function Docs() {
       </section>
 
       <Section heading="h2"
-        title="Proxy integration"
-        description="Route production traffic through the KnowYourAI enforcement layer before it reaches your target model endpoint."
+        title="Proxy layer setup"
+        description="Create a reusable enforcement layer and point your application at its generated proxy URL."
       >
-        <pre>{`Client -> https://api.example.com/proxy/{layer_id} -> target_api`}</pre>
+        <ol className="list">
+          <li><Link to="/layers/new">Create a layer</Link> with a target URL, intent categories and policy rules. Layers can also be managed through <code>/api/layers</code> and <code>/api/layers/&#123;id&#125;</code>.</li>
+          <li>Copy the layer's generated proxy URL. Your application calls <code>POST /api/proxy/&#123;layer_id&#125;</code>.</li>
+          <li>The layer classifies each request and decides <code>allow</code>, <code>block</code> or <code>clarify</code>. Allowed requests are forwarded to the target; the output check can withhold a response.</li>
+        </ol>
+        <pre>{`Client -> https://knowyourai.live/api/proxy/{layer_id} -> target_api`}</pre>
+        <p className="paragraph">Inspect a layer's handled requests with <code>GET /api/layers/&#123;id&#125;/requests</code>.</p>
+      </Section>
+
+      <Section heading="h2" title="Submit a scan from CI">
+        <p className="paragraph">Save the scan request JSON above as <code>scan-request.json</code>, with your target URL and capability boundaries. Supply <code>KYA_API_TOKEN</code> from your CI secret store using a platform API key or Firebase ID token. The account must already have its provider key configured.</p>
+        <pre>{ciExample}</pre>
+        <p className="paragraph">Keep <code>scan-submission.json</code> as the submission record. This command fails on an HTTP error and saves a successful submission; it does not wait for completion or apply a security pass/fail threshold. A successful submission is not a passing scan.</p>
+      </Section>
+
+      <Section heading="h2" title="Integration details still to confirm">
+        <ul className="list">
+          <li>The exact scan submission JSON field for the ID, and the completion/status fields needed for automated polling.</li>
+          <li>The target endpoint's request, response and authentication contract, and its mapping through a proxy layer.</li>
+          <li>The completed-result checks and pass/fail policy required before CI can gate a release.</li>
+        </ul>
       </Section>
     </>
   );
