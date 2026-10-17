@@ -276,3 +276,54 @@ test("hosted tool landings stay public and app navigation stays private", async 
   await page.goto("/demo");
   await expect(page).toHaveURL(/\/login$/);
 });
+
+test("checklist keeps selections, excludes drafts and fits both themes", async ({ page }, testInfo) => {
+  await page.goto("/checklist");
+  const builds = page.getByRole("group", { name: "What are you building?", exact: true });
+  await expect(builds.getByRole("checkbox")).toHaveCount(8);
+  await expect(page.getByRole("button", { name: "Before your first users", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "Copy as markdown", exact: true })).toBeDisabled();
+  await expect(page.getByText("No reviewed controls match this selection yet.", { exact: false })).toBeVisible();
+  for (const checkbox of await builds.getByRole("checkbox").all()) {
+    if (await checkbox.getAttribute("value") !== "chatbot") await checkbox.uncheck();
+  }
+  const chatbot = builds.getByRole("checkbox", { name: "A chatbot or support assistant", exact: true });
+  await chatbot.click();
+  await expect(chatbot).toBeChecked();
+  await page.getByRole("button", { name: "Running it", exact: true }).click();
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("knowyourai-checklist")!).stage)).toBe("running-it");
+  await page.reload();
+  await expect(page.getByRole("button", { name: "Running it", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(builds.locator('input:checked')).toHaveCount(1);
+  for (const width of [375, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const theme of ["light", "dark"]) {
+      await page.evaluate((value) => { document.documentElement.dataset.theme = value; }, theme);
+      await expect(page.locator(".gd-checklist")).toHaveCSS("opacity", "1");
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      await page.screenshot({ path: testInfo.outputPath(`checklist-${theme}-${width}.png`), fullPage: true, animations: "disabled" });
+    }
+  }
+});
+
+test("checklist works when its browser storage is unavailable", async ({ page }) => {
+  await page.addInitScript(() => {
+    const get = Storage.prototype.getItem;
+    const set = Storage.prototype.setItem;
+    Storage.prototype.getItem = function (key) {
+      if (key === "knowyourai-checklist") throw new DOMException("Storage unavailable");
+      return get.call(this, key);
+    };
+    Storage.prototype.setItem = function (key, value) {
+      if (key === "knowyourai-checklist") throw new DOMException("Storage unavailable");
+      return set.call(this, key, value);
+    };
+  });
+  const calls: string[] = [];
+  page.on("request", (request) => { if (new URL(request.url()).pathname.startsWith("/api/")) calls.push(request.url()); });
+  await page.goto("/checklist");
+  await expect(page.getByRole("heading", { level: 1, name: "AI launch checklist", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Running it", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Running it", exact: true })).toHaveAttribute("aria-pressed", "true");
+  expect(calls).toEqual([]);
+});

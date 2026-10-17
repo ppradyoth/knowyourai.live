@@ -135,6 +135,27 @@ jobs:
           }
           JS
           npm run verify
+      - name: Check reviewed checklist filtering and markdown
+        working-directory: frontend
+        run: |
+          node --input-type=module <<'JS'
+          import assert from "node:assert/strict";
+          import { getControls, getStages, selectChecklist, checklistMarkdown } from "./dist-ssr/entry-server.js";
+          const fixtures = getControls().map((item) => ({ ...item, meta: { ...item.meta, review: "reviewed" } }));
+          const selected = selectChecklist(fixtures, getStages(), ["chatbot"], "before-first-users");
+          assert.ok(selected.some((item) => item.slug === "keys-server-side"));
+          assert.ok(selected.some((item) => item.slug === "output-rendering"));
+          assert.ok(!selected.some((item) => ["memory-injection", "agent-config-lint"].includes(item.slug)));
+          const pending = fixtures.map((item) => ({ ...item, meta: { ...item.meta, review: "pending" } }));
+          assert.deepEqual(selectChecklist(pending, getStages(), ["chatbot"], "before-first-users"), []);
+          assert.deepEqual(selectChecklist(fixtures, getStages(), ["chatbot"], "unknown-stage"), []);
+          const markdown = checklistMarkdown(selected, new Set(["keys-server-side"]));
+          const keys = selected.find((item) => item.slug === "keys-server-side");
+          const output = selected.find((item) => item.slug === "output-rendering");
+          assert.ok(markdown.includes(`- [x] ${keys.meta.checklist} (https://knowyourai.live/guide/controls/keys-server-side)`));
+          assert.ok(markdown.includes(`- [ ] ${output.meta.checklist} (https://knowyourai.live/guide/controls/output-rendering)`));
+          console.log("Checklist stage, build, review and markdown checks passed with in-memory fixtures.");
+          JS
       - name: Check Hosting routes in the GitHub runner emulator
         run: |
           cat > "$RUNNER_TEMP/verify-kya-hosting.mjs" <<'JS'

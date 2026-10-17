@@ -2026,3 +2026,17 @@ pre.terminal-body { padding: 18px; }
 .gd-research-cta { margin-top: 40px; text-align: center; }
 .gd-research-cta > p { font-size: 1.1rem; margin-bottom: 16px; }
 .gd-research-cta .hero-actions { justify-content: center; }
+
+.gd-checklist-picker { min-width: 0; margin: 0; padding: 20px; border: 1px solid var(--border); border-radius: 12px; }
+.gd-checklist-picker legend { padding-inline: 8px; font-weight: 600; }
+.gd-checklist-builds { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.gd-checklist-builds label, .gd-checklist-items label { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; line-height: 1.6; }
+.gd-checklist input[type="checkbox"] { appearance: auto; width: 18px; height: 18px; min-height: 18px; margin: 4px 0 0; padding: 0; flex-shrink: 0; accent-color: var(--primary); }
+.gd-checklist-stages { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.gd-checklist-stages button { background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: 12px; text-align: left; }
+.gd-checklist-stages button[aria-pressed="true"] { border-color: var(--primary); background: var(--primary-soft); }
+.gd-checklist-stages span { display: block; margin-top: 8px; font-size: 0.82rem; color: var(--muted); }
+.gd-checklist-copy { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.gd-checklist-copy .terminal-copy { color: var(--text); background: var(--surface); border-color: var(--border); min-height: 44px; }
+.gd-checklist-items { list-style: none; padding: 0; display: grid; gap: 16px; margin-top: 16px; }
+.gd-checklist-items .gd-guide-meta { margin: 12px 0 0 30px; }

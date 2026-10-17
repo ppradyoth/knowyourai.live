@@ -4,6 +4,7 @@ import { StaticRouter } from "react-router-dom";
 import App from "./App";
 import { SeoContext, type SeoData } from "./lib/seoContext";
 
+export { selectChecklist, checklistMarkdown } from "./pages/Checklist";
 export { publicRoutes, appShellRoutes } from "./routes";
 export { getControls, getStages, getBuilds, getPosts } from "./lib/content";
 export { caseStudies, studies } from "./data/research";

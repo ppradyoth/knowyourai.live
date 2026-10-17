@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function CopyButton({ text }: { text: string }) {
+export default function CopyButton({ text, label = "Copy", disabled = false }: { text: string; label?: string; disabled?: boolean }) {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
     try {
@@ -9,5 +9,5 @@ export default function CopyButton({ text }: { text: string }) {
       setTimeout(() => setCopied(false), 1600);
     } catch {}
   };
-  return <button type="button" className="terminal-copy" onClick={copy} aria-live="polite">{copied ? "Copied" : "Copy"}</button>;
+  return <button type="button" className="terminal-copy" onClick={copy} disabled={disabled} aria-live="polite">{copied ? "Copied" : label}</button>;
 }
