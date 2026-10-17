@@ -118,8 +118,8 @@ export default function HowItWorks() {
       {/* CTA */}
       <Section heading="h2" title="Try it on your API" description="No setup required. Point IntentScan at any AI endpoint and run a scan in under two minutes." className="why-closing">
         <div className="hero-actions">
-          <Link to="/intentscan" className="button-primary">Run IntentScan</Link>
-          <Link to="/enforce" className="button-secondary">Try IntentEnforce</Link>
+          <Link to="/app/intentscan" className="button-primary">Run IntentScan</Link>
+          <Link to="/app/enforce" className="button-secondary">Try IntentEnforce</Link>
         </div>
       </Section>
     </>

@@ -20,12 +20,12 @@ export default function ScanHistory() {
     <section className="section" style={{ maxWidth: 900, margin: "0 auto" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
         <h1>Scan History</h1>
-        <Link to="/intentscan" className="button-primary" style={{ fontSize: "0.9rem" }}>New Scan</Link>
+        <Link to="/app/intentscan" className="button-primary" style={{ fontSize: "0.9rem" }}>New Scan</Link>
       </div>
 
       {loading ? <p style={{ color: "var(--muted)" }}>Loading…</p> : scans.length === 0 ? (
         <div className="panel">
-          <p style={{ color: "var(--muted)" }}>No scans yet. <Link to="/intentscan" style={{ color: "var(--primary)", fontWeight: 600 }}>Run your first IntentScan</Link>.</p>
+          <p style={{ color: "var(--muted)" }}>No scans yet. <Link to="/app/intentscan" style={{ color: "var(--primary)", fontWeight: 600 }}>Run your first IntentScan</Link>.</p>
         </div>
       ) : (
         <div className="panel">

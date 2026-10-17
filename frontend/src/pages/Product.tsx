@@ -25,7 +25,7 @@ export default function Product() {
             <h3 style={{ fontSize: "1.15rem", marginBottom: 8 }}>IntentScan</h3>
             <p className="card-description">Pre-production adversarial testing. Define your AI's boundaries, generate adversarial probes across 8+ attack strategies, and get a risk-scored violation report.</p>
             <div style={{ marginTop: 16, display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <Link to="/intentscan" className="button-primary" style={{ fontSize: "0.85rem", padding: "8px 16px" }}>Run IntentScan</Link>
+              <Link to="/app/intentscan" className="button-primary" style={{ fontSize: "0.85rem", padding: "8px 16px" }}>Run IntentScan</Link>
               <Link to="/how-it-works" style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--primary)", alignSelf: "center" }}>How it works →</Link>
             </div>
           </div>
@@ -33,7 +33,7 @@ export default function Product() {
             <h3 style={{ fontSize: "1.15rem", marginBottom: 8 }}>IntentEnforce</h3>
             <p className="card-description">Runtime proxy that classifies every prompt before it reaches your AI. Configurable allow/block/clarify policy rules enforced in real-time.</p>
             <div style={{ marginTop: 16, display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <Link to="/enforce" className="button-primary" style={{ fontSize: "0.85rem", padding: "8px 16px" }}>Try IntentEnforce</Link>
+              <Link to="/app/enforce" className="button-primary" style={{ fontSize: "0.85rem", padding: "8px 16px" }}>Try IntentEnforce</Link>
               <Link to="/how-it-works" style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--primary)", alignSelf: "center" }}>How it works →</Link>
             </div>
           </div>

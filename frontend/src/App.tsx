@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
+import SEO from "./components/SEO";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
@@ -42,6 +43,8 @@ const UseCases = lazy(() => import("./pages/UseCases"));
 const Why = lazy(() => import("./pages/Why"));
 const WhyKnowYourAI = lazy(() => import("./pages/WhyKnowYourAI"));
 const WhatsUnique = lazy(() => import("./pages/WhatsUnique"));
+const IntentScanLanding = lazy(() => import("./pages/IntentScanLanding"));
+const IntentEnforceLanding = lazy(() => import("./pages/IntentEnforceLanding"));
 const GuideIndex = lazy(() => import("./pages/guide/GuideIndex"));
 const GuideStage = lazy(() => import("./pages/guide/GuideStage"));
 const GuideBuild = lazy(() => import("./pages/guide/GuideBuild"));
@@ -69,18 +72,22 @@ export default function App() {
           <Route path="whats-unique" element={<WhatsUnique />} />
           <Route path="services" element={<Services />} />
           <Route path="request" element={<RequestAssessment />} />
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path="dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-          <Route path="account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
-          <Route path="scans" element={<ProtectedRoute><ScanHistory /></ProtectedRoute>} />
-          <Route path="scans/:scanId" element={<ProtectedRoute><ScanDetail /></ProtectedRoute>} />
-          <Route path="layers" element={<ProtectedRoute><Layers /></ProtectedRoute>} />
-          <Route path="layers/new" element={<ProtectedRoute><LayerCreate /></ProtectedRoute>} />
-          <Route path="layers/:layerId" element={<ProtectedRoute><LayerDetail /></ProtectedRoute>} />
-          <Route path="enforce" element={<ProtectedRoute><Enforce /></ProtectedRoute>} />
-          <Route path="intentscan" element={<ProtectedRoute><Demo /></ProtectedRoute>} />
-          <Route path="demo" element={<Navigate to="/intentscan" replace />} />
+          <Route path="intentscan" element={<IntentScanLanding />} />
+          <Route path="enforce" element={<IntentEnforceLanding />} />
+          <Route element={<AppShell />}>
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+            <Route path="dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
+            <Route path="scans" element={<ProtectedRoute><ScanHistory /></ProtectedRoute>} />
+            <Route path="scans/:scanId" element={<ProtectedRoute><ScanDetail /></ProtectedRoute>} />
+            <Route path="layers" element={<ProtectedRoute><Layers /></ProtectedRoute>} />
+            <Route path="layers/new" element={<ProtectedRoute><LayerCreate /></ProtectedRoute>} />
+            <Route path="layers/:layerId" element={<ProtectedRoute><LayerDetail /></ProtectedRoute>} />
+            <Route path="app/enforce" element={<ProtectedRoute><Enforce /></ProtectedRoute>} />
+            <Route path="app/intentscan" element={<ProtectedRoute><Demo /></ProtectedRoute>} />
+            <Route path="demo" element={<Navigate to="/app/intentscan" replace />} />
+          </Route>
 
           <Route path="security" element={<Security />} />
           <Route path="trust" element={<Navigate to="/security" replace />} />
@@ -110,4 +117,9 @@ export default function App() {
       </Routes>
     </Suspense>
   );
+}
+
+function AppShell() {
+  const { pathname } = useLocation();
+  return <><SEO title="Your account" description="Sign in to use your KnowYourAI tools, scans, enforcement layers and account settings." path={pathname} noindex /><Outlet /></>;
 }

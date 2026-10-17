@@ -66,10 +66,10 @@ export default function Dashboard() {
       )}
 
       <div className="card-grid" style={{ gridTemplateColumns: "repeat(4, 1fr)", marginBottom: 32 }}>
-        <ActionCard to="/intentscan" label="New Scan" sub="Run IntentScan" />
+        <ActionCard to="/app/intentscan" label="New Scan" sub="Run IntentScan" />
         <ActionCard to="/scans" label="History" sub={`${recentScans.length}+ scans`} />
         <ActionCard to="/layers" label="Layers" sub={`${layerCount} active`} />
-        <ActionCard to="/enforce" label="Enforce" sub="Test playground" />
+        <ActionCard to="/app/enforce" label="Enforce" sub="Test playground" />
       </div>
 
       <div className="panel" style={{ marginBottom: 32 }}>
@@ -84,7 +84,7 @@ export default function Dashboard() {
           <h2>Recent Scans</h2>
         </div>
         {recentScans.length === 0 ? (
-          <p style={{ color: "var(--muted)" }}>No scans yet. <Link to="/intentscan" style={{ color: "var(--primary)", fontWeight: 600 }}>Run your first scan</Link>.</p>
+          <p style={{ color: "var(--muted)" }}>No scans yet. <Link to="/app/intentscan" style={{ color: "var(--primary)", fontWeight: 600 }}>Run your first scan</Link>.</p>
         ) : (
           <div className="comparison-table-wrap">
             <table className="comparison-table">

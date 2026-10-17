@@ -224,13 +224,13 @@ export default function WhatsUnique() {
         </p>
         <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
           <button
-            onClick={() => navigate("/intentscan")}
+            onClick={() => navigate("/app/intentscan")}
             style={{ padding: "14px 32px", background: "var(--primary-strong)", color: "white", border: "none", borderRadius: "8px", fontWeight: 700, fontSize: "1rem", cursor: "pointer" }}
           >
             Run IntentScan
           </button>
           <button
-            onClick={() => navigate("/enforce")}
+            onClick={() => navigate("/app/enforce")}
             style={{ padding: "14px 32px", background: "white", color: "var(--primary-strong)", border: "2px solid var(--primary-strong)", borderRadius: "8px", fontWeight: 700, fontSize: "1rem", cursor: "pointer" }}
           >
             Try IntentEnforce

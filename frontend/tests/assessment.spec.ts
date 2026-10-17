@@ -249,10 +249,30 @@ test("research pages retain full evidence and legacy case fragments", async ({ p
     await page.setViewportSize({ width, height: 900 });
     for (const theme of ["light", "dark"]) {
       await page.evaluate((value) => { document.documentElement.dataset.theme = value; window.scrollTo(0, 0); }, theme);
+      await expect(page.locator(".gd-research-page")).toHaveCSS("opacity", "1");
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-      await page.screenshot({ path: testInfo.outputPath(`research-${theme}-${width}.png`), fullPage: true });
+      await page.screenshot({ path: testInfo.outputPath(`research-${theme}-${width}.png`), fullPage: true, animations: "disabled" });
     }
   }
   await page.goto("/case-studies/missing-case");
   await expect(page.getByRole("heading", { name: "Page not found", exact: true })).toBeVisible();
+});
+
+test("hosted tool landings stay public and app navigation stays private", async ({ page, request }) => {
+  for (const [path, name] of [["/intentscan", "IntentScan"], ["/enforce", "IntentEnforce"]]) {
+    const html = await (await request.get(path)).text();
+    expect(html).toContain('<meta name="robots" content="index, follow">');
+    expect(html.match(/<h1\b/g)).toHaveLength(1);
+    expect(html).toContain(`href="/app${path}"`);
+    await page.goto(path);
+    await expect(page.getByRole("heading", { level: 1, name, exact: true })).toBeVisible();
+    await page.getByRole("link", { name: "Open the app", exact: true }).click();
+    await expect(page).toHaveURL(/\/login$/);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex");
+    const shell = await (await request.get(`/app${path}`)).text();
+    expect(shell).toContain('<meta name="robots" content="noindex">');
+    expect(shell).toContain('<div id="root"></div>');
+  }
+  await page.goto("/demo");
+  await expect(page).toHaveURL(/\/login$/);
 });

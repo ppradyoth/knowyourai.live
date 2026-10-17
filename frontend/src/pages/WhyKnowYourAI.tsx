@@ -169,8 +169,8 @@ export default function WhyKnowYourAI() {
         className="why-closing"
       >
         <div className="hero-actions">
-          <Link to="/intentscan" className="button-primary">Run a Scan</Link>
-          <Link to="/enforce" className="button-secondary">Try Enforcement</Link>
+          <Link to="/app/intentscan" className="button-primary">Run a Scan</Link>
+          <Link to="/app/enforce" className="button-secondary">Try Enforcement</Link>
         </div>
       </Section>
     </>

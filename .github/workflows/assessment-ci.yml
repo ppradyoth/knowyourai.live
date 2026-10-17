@@ -159,11 +159,19 @@ jobs:
           console.log(`/llms.txt: ${llms.status}`);
           assert.equal(llms.status, 200);
           assert.ok((await llms.text()).startsWith("# KnowYourAI\n"));
-          for (const path of ["/dashboard", "/intentscan", "/enforce", "/demo"]) {
+          for (const path of ["/dashboard", "/app/intentscan", "/app/enforce", "/demo"]) {
             const response = await get(path);
             console.log(`${path}: ${response.status}`);
             assert.equal(response.status, 200);
             assert.match(await response.text(), /<meta name="robots" content="noindex">/);
+          }
+          for (const path of ["/intentscan", "/enforce"]) {
+            const response = await get(path);
+            console.log(`${path}: ${response.status} public landing`);
+            assert.equal(response.status, 200);
+            const landing = await response.text();
+            assert.match(landing, /<meta name="robots" content="index, follow">/);
+            assert.equal((landing.match(/<h1\b/g) ?? []).length, 1);
           }
           const script = html.match(/<script\b[^>]*src="([^"]+)"[^>]*>/)?.[1];
           assert.ok(script);
