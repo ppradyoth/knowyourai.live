@@ -36,6 +36,7 @@ const Security = lazy(() => import("./pages/Security"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Tools = lazy(() => import("./pages/Tools"));
+const ToolDetail = lazy(() => import("./pages/ToolDetail"));
 const UseCases = lazy(() => import("./pages/UseCases"));
 const Why = lazy(() => import("./pages/Why"));
 const WhyKnowYourAI = lazy(() => import("./pages/WhyKnowYourAI"));
@@ -52,6 +53,7 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="tools" element={<Tools />} />
+          <Route path="tools/:slug" element={<ToolDetail />} />
           <Route path="guide" element={<GuideIndex />} />
           <Route path="guide/stage/:slug" element={<GuideStage />} />
           <Route path="guide/build/:slug" element={<GuideBuild />} />

@@ -1,53 +1,20 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Section from "../components/Section";
 import SEO from "../components/SEO";
-import CopyButton from "../components/CopyButton";
-import { experimental, toolStages, type Tool } from "../data/tools";
+import { experimental, toolStages } from "../data/tools";
 
 const toolCount = toolStages.reduce((sum, stage) => sum + stage.tools.length, 0);
 
-function Terminal({ command, output }: { command: string; output?: string }) {
-  return (
-    <div className="terminal">
-      <div className="terminal-bar">
-        <span className="terminal-dots" aria-hidden="true"><i /><i /><i /></span>
-        <CopyButton text={command} />
-      </div>
-      <pre className="terminal-body"><code>{command.split("\n").map((line) => `$ ${line}`).join("\n")}{output && <span className="terminal-output">{`\n\n${output}`}</span>}</code></pre>
-    </div>
-  );
-}
-
-function ToolSection({ tool }: { tool: Tool }) {
-  return (
-    <article id={tool.slug} className="tool-section">
-      <div className="tool-copy">
-        <div className="tool-meta">
-          <span className="tool-status">{tool.status}</span>
-          {tool.license && <span>{tool.license}</span>}
-        </div>
-        <h2>{tool.name}</h2>
-        <p className="tool-pitch">{tool.pitch}</p>
-        <p className="tool-problem">{tool.problem}</p>
-        <ul className="list">{tool.points.map((point) => <li key={point}>{point}</li>)}</ul>
-        <p className="tool-limit"><strong>Know the limit.</strong> {tool.limit}</p>
-        <div className="tool-links">
-          {tool.links.map((link, i) => link.internal
-            ? <Link key={link.href} to={link.href} className={i === 0 ? "button-primary" : "button-secondary"}>{link.label}</Link>
-            : <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={i === 0 ? "button-primary" : "button-secondary"}>{link.label} ↗</a>)}
-        </div>
-      </div>
-      {tool.command && <Terminal command={tool.command} output={tool.output} />}
-    </article>
-  );
-}
-
 export default function Tools() {
+  const { hash } = useLocation();
+  const navigate = useNavigate();
   useEffect(() => {
-    const id = window.location.hash.slice(1);
-    if (id) requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ block: "start" }));
-  }, []);
+    const id = hash.slice(1);
+    if (toolStages.some((stage) => stage.tools.some((tool) => tool.slug === id))) {
+      navigate(`/tools/${id}`, { replace: true });
+    } else if (id) requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ block: "start" }));
+  }, [hash, navigate]);
 
   return (
     <>
@@ -64,7 +31,7 @@ export default function Tools() {
           {toolStages.map((stage) => (
             <div key={stage.id}>
               <a href={`#${stage.id}`} className="tool-index-stage">{stage.title}</a>
-              <div className="tool-index-links">{stage.tools.map((tool) => <a key={tool.slug} href={`#${tool.slug}`}>{tool.name}</a>)}</div>
+              <div className="tool-index-links">{stage.tools.map((tool) => <Link key={tool.slug} to={`/tools/${tool.slug}`}>{tool.name}</Link>)}</div>
             </div>
           ))}
         </nav>
@@ -76,7 +43,11 @@ export default function Tools() {
             <p className="eyebrow">{stage.title}</p>
             <h2>{stage.question}</h2>
           </header>
-          {stage.tools.map((tool) => <ToolSection key={tool.slug} tool={tool} />)}
+          <div className="card-grid two-col">{stage.tools.map((tool) => <article className="card" key={tool.slug}>
+            <p className="tool-meta">{tool.status}</p>
+            <h3><Link to={`/tools/${tool.slug}`}>{tool.name}</Link></h3>
+            <p className="card-description">{tool.pitch}</p>
+          </article>)}</div>
         </section>
       ))}
 
@@ -87,6 +58,8 @@ export default function Tools() {
           ))}
         </ul>
       </Section>
+
+      <Section heading="h2" title="Know the limit" description="Each tool states what it checks and where it stops. Read its limits before relying on a result." />
 
       <Section heading="h2" title="Want someone else to run the tests?" description="The same methods, applied to your system by us, with a findings report at the end.">
         <div className="hero-actions">

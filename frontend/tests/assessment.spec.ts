@@ -201,3 +201,24 @@ test("guide drafts prerender with evidence, code and review boundaries", async (
   }
   expect(errors).toEqual([]);
 });
+
+test("tool detail pages prerender their data and legacy fragments redirect", async ({ page, request }) => {
+  await page.goto("/tools");
+  const links = await page.locator(".tool-stage .card h3 a").evaluateAll((items) => items.map((item) => item.getAttribute("href")!));
+  expect(links).toHaveLength(14);
+  for (const path of links) {
+    const response = await request.get(path);
+    expect(response.ok()).toBeTruthy();
+    const html = await response.text();
+    expect(html.match(/<h1\b/g)).toHaveLength(1);
+    expect(html).toContain("Know the limit");
+    expect(html).toContain("Used in the guide");
+    const schemas = [...html.matchAll(/<script type="application\/ld\+json" data-gd-seo>(.*?)<\/script>/g)].map((match) => JSON.parse(match[1]));
+    expect(schemas.find((item) => item["@type"] === "SoftwareApplication")?.offers.price).toBe(0);
+  }
+  await page.goto("/tools#agentscan");
+  await expect(page).toHaveURL(/\/tools\/agentscan$/);
+  await expect(page.getByRole("heading", { level: 1, name: "agentscan", exact: true })).toBeVisible();
+  await page.goto("/tools/missing-tool");
+  await expect(page.getByRole("heading", { name: "Page not found", exact: true })).toBeVisible();
+});

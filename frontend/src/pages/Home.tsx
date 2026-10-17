@@ -81,7 +81,7 @@ function HeroTerminal() {
       </code></pre>
       <div className="hm-term-foot">
         <span>{demo.pitch}</span>
-        <Link to={`/tools#${demo.slug}`}>See {demo.name} →</Link>
+        <Link to={`/tools/${demo.slug}`}>See {demo.name} →</Link>
       </div>
     </div>
   );
