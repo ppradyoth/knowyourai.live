@@ -3,7 +3,7 @@ import { join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
 import { parse } from "yaml";
-import { publicRoutes, caseStudies, studies, toolStages } from "../dist-ssr/entry-server.js";
+import { publicRoutes, appShellRoutes, caseStudies, studies, toolStages } from "../dist-ssr/entry-server.js";
 
 const dist = resolve(fileURLToPath(new URL("../dist/", import.meta.url)));
 const index = join(dist, "index.html");
@@ -166,3 +166,23 @@ const caseNames = [...caseStudies, ...studies];
 const copiedFacts = controls.flatMap(({ file, meta: value, body }) => caseNames.filter((item) => item.target !== caseTargets[value.case])
   .flatMap((item) => [item.brand, item.target].filter(Boolean)).filter((name) => body.toLowerCase().includes(name.toLowerCase())).map((name) => `${file}: contains another case name (${name})`));
 report("R20", copiedFacts.length === 0, copiedFacts.length ? copiedFacts.join("; ") : "control bodies do not name unrelated cases");
+
+const site = "https://knowyourai.live";
+const isFile = (path) => existsSync(path) && statSync(path).isFile();
+const isShell = (path) => appShellRoutes.some((route) => route.endsWith("/**")
+  ? path === route.slice(0, -3) || path.startsWith(`${route.slice(0, -3)}/`) : path === route);
+const brokenLinks = files(dist).filter((file) => file.endsWith(".html")).flatMap((file) => {
+  const route = file.slice(dist.length).replace(/\.html$/, "").replace(/\/index$/, "/");
+  const html = readFileSync(file, "utf8");
+  return [...html.matchAll(/<a\b[^>]*>/gi)].flatMap(([tag]) => {
+    const href = decode(attribute(tag, "href"));
+    if (!href) return [];
+    const url = new URL(href, `${site}${route}`);
+    if (url.origin !== site) return [];
+    const path = decodeURIComponent(url.pathname).replace(/\/$/, "") || "/";
+    if (isShell(path) || /^\/(ctf|api)(\/|$)/.test(path)) return [];
+    const target = join(dist, path === "/" ? "index.html" : path.slice(1));
+    return isFile(target) || isFile(`${target}.html`) ? [] : [`${file}: ${href}`];
+  });
+});
+report("R18", brokenLinks.length === 0, brokenLinks.length ? brokenLinks.join("; ") : "all internal links resolve to files or allowed app, CTF and API routes");

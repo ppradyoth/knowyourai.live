@@ -1,14 +1,8 @@
 import { Link } from "react-router-dom";
 import { caseStudies } from "../../data/research";
 
-const targets: Record<string, string> = {
-  "jack-and-jill": "Jack & Jill AI", "notion-ai": "Notion AI", "priceline-penny": "Priceline (Penny)",
-  "brave-leo": "Brave Leo", "meta-ai-whatsapp": "Meta AI (WhatsApp)", "claude-code": "Anthropic Claude Code",
-  "reddit-answers": "Reddit Answers", "harvey-labs": "Harvey Labs", "hackerone-hai": "HackerOne Hai",
-};
-
 export default function CaseExcerpt({ slug }: { slug: string }) {
-  const item = caseStudies.find((item) => item.target === targets[slug]);
+  const item = caseStudies.find((item) => item.slug === slug);
   if (!item) return null;
   const anchor = `case-${item.target.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`;
   return <aside className="card gd-case-excerpt" aria-label="Case evidence">

@@ -1,4 +1,5 @@
 export type CaseStudy = {
+  slug: string;
   target: string;
   org: string;
   hook: string;
@@ -33,6 +34,7 @@ export type EvidenceRecord = {
 };
 
 export type Study = {
+  slug: string;
   target: string;
   kind: string;
   date: string;
@@ -48,6 +50,7 @@ export type ContributionStatus = "merged" | "open" | "closed";
 
 export const caseStudies: CaseStudy[] = [
   {
+    "slug": "jack-and-jill",
     "target": "Jack & Jill AI",
     "org": "Jack & Jill · $20M-seed, Creandum-backed · 230,000+ users",
     "featured": true,
@@ -89,6 +92,7 @@ export const caseStudies: CaseStudy[] = [
     "status": "Reported to founders · confirmed"
   },
   {
+    "slug": "notion-ai",
     "target": "Notion AI",
     "org": "Notion",
     "hook": "Page-style instructions steered Notion AI into returning tool schemas, filesystem-shaped output, and a page-write confirmation.",
@@ -127,6 +131,7 @@ export const caseStudies: CaseStudy[] = [
     "status": "Disclosed via HackerOne · Free-tier account · duplicate dispute open"
   },
   {
+    "slug": "priceline-penny",
     "target": "Priceline (Penny)",
     "scope": "User-facing travel assistant, researcher-controlled session. Booking was attempted and failed. No reservation, payment, or financial loss was demonstrated.",
     "org": "Booking Holdings",
@@ -163,6 +168,7 @@ export const caseStudies: CaseStudy[] = [
     "status": "Closed N/A · later pricing control recorded"
   },
   {
+    "slug": "brave-leo",
     "target": "Brave Leo",
     "scope": "A researcher's own browser and synthetic memory values, with researcher-controlled memory write access. No other user's data or remote compromise was demonstrated. The public capture shows memory-instruction following on an ordinary query.",
     "org": "Brave Software",
@@ -191,6 +197,7 @@ export const caseStudies: CaseStudy[] = [
     "status": "Reported to Brave AI safety"
   },
   {
+    "slug": "meta-ai-whatsapp",
     "target": "Meta AI (WhatsApp)",
     "scope": "A researcher's own WhatsApp account and synthetic tokens, tested May 24, 2026. Recovery after ‘Delete for me’ was observed. These captures do not establish backend retention design or a legal erasure violation.",
     "org": "Meta",
@@ -222,6 +229,7 @@ export const caseStudies: CaseStudy[] = [
     "status": "Submitted · dismissed by vendor · under dispute"
   },
   {
+    "slug": "claude-code",
     "target": "Anthropic Claude Code",
     "scope": "Local macOS agent sessions on our own projects, May–September 2026. Credential exposure occurred in bypass-permissions mode. Later authorization incidents and a confidential-source near-miss are distinguished in the evidence.",
     "revisit": "The September 24 field report also records a May 24 context-summary constraint misattributed to the user, a September 5 deployment to the wrong Firebase project followed by an outage, and a September 10 confidential-source reuse attempt stopped before any write. The last case is a near-miss, not a disclosure. These are separate incident classes, not additional credential-exposure findings.",
@@ -261,6 +269,7 @@ export const caseStudies: CaseStudy[] = [
     "ref": "https://github.com/anthropics/claude-code/pull/62099"
   },
   {
+    "slug": "reddit-answers",
     "target": "Reddit Answers",
     "scope": "Public query interface and saved response transcripts. Configuration and system-policy text are model-produced output, not independently authenticated production configuration. Historical reproduction does not establish current vulnerability status.",
     "org": "Reddit",
@@ -295,6 +304,7 @@ export const caseStudies: CaseStudy[] = [
     "status": "Disclosed via HackerOne · duplicate"
   },
   {
+    "slug": "harvey-labs",
     "target": "Harvey Labs",
     "scope": "Open-source evaluation code and local parser PoCs, June 1, 2026. No production Harvey access and no live judge-model calls. Host parsing is an architectural risk, not a demonstrated sandbox escape.",
     "org": "Harvey",
@@ -322,6 +332,7 @@ export const caseStudies: CaseStudy[] = [
     "status": "Disclosed to vendor"
   },
   {
+    "slug": "hackerone-hai",
     "target": "HackerOne Hai",
     "scope": "Documented assistant responses. Self-identification alone does not authenticate the underlying deployment. The screenshot files named in the archive index are unavailable, so public evidence uses the recorded text rather than a reconstructed image.",
     "revisit": "A separate UX observation records suggestions being sent straight back to Hai, causing the assistant to answer its own suggested question. This is a conversation-design issue, not an additional security vulnerability.",
@@ -445,6 +456,7 @@ export const caseEvidence: Record<string, EvidenceRecord[]> = {
 
 export const studies: Study[] = [
   {
+    "slug": "codeant-ai-benchmark",
     "target": "CodeAnt AI benchmark",
     "kind": "Benchmark",
     "date": "August 8, 2026",
@@ -529,6 +541,7 @@ export const studies: Study[] = [
     ]
   },
   {
+    "slug": "food-delivery-chatbot",
     "target": "Food delivery chatbot",
     "kind": "Observation",
     "date": "August 30, 2026",
