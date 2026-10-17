@@ -222,3 +222,37 @@ test("tool detail pages prerender their data and legacy fragments redirect", asy
   await page.goto("/tools/missing-tool");
   await expect(page.getByRole("heading", { name: "Page not found", exact: true })).toBeVisible();
 });
+
+test("research pages retain full evidence and legacy case fragments", async ({ page, request }, testInfo) => {
+  await page.goto("/case-studies");
+  const links = await page.locator(".gd-research-listing .gd-research-title a").evaluateAll((items) => items.map((item) => item.getAttribute("href")!));
+  expect(links).toHaveLength(11);
+  for (const path of links) {
+    const response = await request.get(path);
+    expect(response.ok()).toBeTruthy();
+    const html = await response.text();
+    expect(html.match(/<h1\b/g)).toHaveLength(1);
+    expect(html).toContain("How to prevent this");
+    expect(html).toContain("All work here was performed independently");
+    expect(html).toContain("Know the limit");
+    const schemas = [...html.matchAll(/<script type="application\/ld\+json" data-gd-seo>(.*?)<\/script>/g)].map((match) => JSON.parse(match[1]));
+    expect(schemas.some((item) => item["@type"] === "Article")).toBe(true);
+  }
+  await page.goto("/case-studies#case-priceline-penny-");
+  await expect(page).toHaveURL(/\/case-studies\/priceline-penny$/);
+  await expect(page.getByRole("heading", { level: 1, name: "Priceline (Penny)", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Disclosure record", exact: true })).toBeVisible();
+  await expect(page.getByText("No reservation, payment, or financial loss was demonstrated.", { exact: false })).toBeVisible();
+  await page.goto("/case-studies/codeant-ai-benchmark");
+  await expect(page.getByRole("heading", { name: "Evidence records", exact: true })).toBeVisible();
+  for (const width of [375, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const theme of ["light", "dark"]) {
+      await page.evaluate((value) => { document.documentElement.dataset.theme = value; window.scrollTo(0, 0); }, theme);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      await page.screenshot({ path: testInfo.outputPath(`research-${theme}-${width}.png`), fullPage: true });
+    }
+  }
+  await page.goto("/case-studies/missing-case");
+  await expect(page.getByRole("heading", { name: "Page not found", exact: true })).toBeVisible();
+});

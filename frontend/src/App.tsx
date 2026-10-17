@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 const About = lazy(() => import("./pages/About"));
 const Services = lazy(() => import("./pages/Services"));
 const CaseStudies = lazy(() => import("./pages/CaseStudies"));
+const CaseDetail = lazy(() => import("./pages/CaseDetail"));
 const RequestAssessment = lazy(() => import("./pages/RequestAssessment"));
 const Assessment = lazy(() => import("./pages/Assessment"));
 const Architecture = lazy(() => import("./pages/Architecture"));
@@ -96,6 +97,7 @@ export default function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="case-studies" element={<CaseStudies />} />
+          <Route path="case-studies/:slug" element={<CaseDetail />} />
           <Route path="changelog" element={<Navigate to="/tools" replace />} />
 
           <Route path="terms" element={<Terms />} />

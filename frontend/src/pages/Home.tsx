@@ -4,7 +4,6 @@ import SEO from "../components/SEO";
 import { caseStudies, contributions, studies } from "../data/research";
 import { toolStages, type Tool } from "../data/tools";
 
-const anchorId = (target: string) => `case-${target.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`;
 const allTools = toolStages.flatMap((stage) => stage.tools);
 const demos = ["knowyourai", "agentscan", "jev-guard", "weighted-safety-refusal"]
   .map((slug) => allTools.find((tool) => tool.slug === slug))
@@ -189,7 +188,7 @@ export default function Home() {
           <p>Independent testing of shipped AI products. Each case records what was observed, what was not established, and how the vendor responded.</p>
         </header>
         <div className="hm-cases">
-          <Link to={`/case-studies#${anchorId(featured.target)}`} className="hm-case-main" data-reveal>
+          <Link to={`/case-studies/${featured.slug}`} className="hm-case-main" data-reveal>
             <div className="hm-case-meta"><span className="hm-sev">{featured.severityDetail}</span><span>{featured.findings} reported findings</span><span>{featured.status}</span></div>
             <p className="hm-case-target">{featured.brand ?? featured.target}</p>
             <blockquote>{featured.hook}</blockquote>
@@ -198,7 +197,7 @@ export default function Home() {
           </Link>
           <div className="hm-case-list">
             {otherCases.slice(0, 4).map((c, i) => (
-              <Link key={c.target} to={`/case-studies#${anchorId(c.target)}`} className="hm-case" data-reveal style={{ transitionDelay: `${(i + 1) * 60}ms` }}>
+              <Link key={c.target} to={`/case-studies/${c.slug}`} className="hm-case" data-reveal style={{ transitionDelay: `${(i + 1) * 60}ms` }}>
                 <div className="hm-case-meta"><span className="hm-sev">{c.severityDetail || c.severity}</span><span>{c.target}</span></div>
                 <p>{c.hook}</p>
               </Link>
