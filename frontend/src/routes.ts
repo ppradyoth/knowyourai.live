@@ -11,7 +11,7 @@ export function publicRoutes(): string[] {
     ...[...caseStudies, ...studies].map((item) => `/case-studies/${item.slug}`),
     ...toolStages.flatMap((stage) => stage.tools.map((tool) => `/tools/${tool.slug}`)),
     ...getPosts().map((post) => `/blog/${post.slug}`),
-    "/guide", "/checklist",
+    "/guide", "/checklist", "/agent",
     ...getControls().map((item) => `/guide/controls/${item.slug}`),
     ...getStages().map((item) => `/guide/stage/${item.slug}`),
     ...getBuilds().map((item) => `/guide/build/${item.slug}`),

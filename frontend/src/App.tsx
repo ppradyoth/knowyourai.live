@@ -45,6 +45,7 @@ const WhyKnowYourAI = lazy(() => import("./pages/WhyKnowYourAI"));
 const WhatsUnique = lazy(() => import("./pages/WhatsUnique"));
 const IntentScanLanding = lazy(() => import("./pages/IntentScanLanding"));
 const IntentEnforceLanding = lazy(() => import("./pages/IntentEnforceLanding"));
+const Agent = lazy(() => import("./pages/Agent"));
 const Checklist = lazy(() => import("./pages/Checklist"));
 const GuideIndex = lazy(() => import("./pages/guide/GuideIndex"));
 const GuideStage = lazy(() => import("./pages/guide/GuideStage"));
@@ -61,6 +62,7 @@ export default function App() {
           <Route path="tools/:slug" element={<ToolDetail />} />
           <Route path="guide" element={<GuideIndex />} />
           <Route path="checklist" element={<Checklist />} />
+          <Route path="agent" element={<Agent />} />
           <Route path="guide/stage/:slug" element={<GuideStage />} />
           <Route path="guide/build/:slug" element={<GuideBuild />} />
           <Route path="guide/controls/:slug" element={<GuideControl />} />

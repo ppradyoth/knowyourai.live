@@ -3,7 +3,7 @@ import { join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
 import { parse } from "yaml";
-import { publicRoutes, appShellRoutes, caseStudies, studies, toolStages } from "../dist-ssr/entry-server.js";
+import { publicRoutes, appShellRoutes, caseStudies, studies, toolStages, getControls } from "../dist-ssr/entry-server.js";
 
 const dist = resolve(fileURLToPath(new URL("../dist/", import.meta.url)));
 const index = join(dist, "index.html");
@@ -186,3 +186,19 @@ const brokenLinks = files(dist).filter((file) => file.endsWith(".html")).flatMap
   });
 });
 report("R18", brokenLinks.length === 0, brokenLinks.length ? brokenLinks.join("; ") : "all internal links resolve to files or allowed app, CTF and API routes");
+
+const expectedRules = getControls().filter((item) => item.meta.review === "reviewed")
+  .map((item) => `- ${item.meta.agent_rule.replace(/\s+/g, " ").trim()} (${site}/guide/controls/${item.slug})`).sort();
+const invalidAgentFiles = ["AGENTS.md", "SKILL.md", "knowyourai.mdc"].filter((name) => {
+  const path = join(dist, "agent", name);
+  if (!isFile(path)) return true;
+  const text = readFileSync(path, "utf8");
+  const rules = text.split("\n").filter((line) => line.startsWith("- ")).sort();
+  if (!text.includes("# AI safety rules (knowyourai.live)") || rules.length !== expectedRules.length || rules.some((line, index) => line !== expectedRules[index])) return true;
+  if (name === "AGENTS.md") return false;
+  const frontmatter = text.match(/^---\n([\s\S]*?)\n---\n/);
+  if (!frontmatter) return true;
+  const value = parse(frontmatter[1]);
+  return !isText(value.description) || (name === "SKILL.md" ? value.name !== "knowyourai-safe-ai" : typeof value.alwaysApply !== "boolean");
+});
+report("R19", invalidAgentFiles.length === 0, invalidAgentFiles.length ? `invalid agent files: ${invalidAgentFiles.join(", ")}` : `three agent files contain exactly ${expectedRules.length} reviewed control rules each`);

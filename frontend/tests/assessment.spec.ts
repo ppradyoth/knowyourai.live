@@ -154,30 +154,37 @@ test("moved blog posts render and stay out of indexing while pending", async ({ 
   }
 });
 
-test("guide drafts prerender with evidence, code and review boundaries", async ({ page, request, context }, testInfo) => {
+test("guide review status controls indexing, evidence and markdown", async ({ page, request, context }, testInfo) => {
   const route = "/guide/controls/tool-argument-validation";
   const errors: string[] = [];
   page.on("console", (message) => {
     if (message.type() === "error" && /hydration|did not match|server HTML/i.test(message.text())) errors.push(message.text());
   });
+  const source = await readFile(`${process.env.ASSESSMENT_FRONTEND_DIR}/content/controls/tool-argument-validation.md`, "utf8");
+  const pending = /^review:\s*["']?pending["']?\s*$/m.test(source);
   for (const path of ["/guide", "/guide/stage/before-first-users", route]) {
     const response = await request.get(path);
     expect(response.ok()).toBeTruthy();
     const html = await response.text();
     expect((html.match(/<h1\b/g) ?? []).length).toBe(1);
     expect(html).not.toMatch(/<div id="root">\s*<\/div>/);
-    if (path !== "/guide") expect(html).toContain('<meta name="robots" content="noindex">');
+    if (path !== "/guide") {
+      const file = path === route ? "controls/tool-argument-validation.md" : "stages/before-first-users.md";
+      const text = await readFile(`${process.env.ASSESSMENT_FRONTEND_DIR}/content/${file}`, "utf8");
+      const noindex = /^review:\s*["']?pending["']?\s*$/m.test(text);
+      expect(html).toContain(`<meta name="robots" content="${noindex ? "noindex" : "index, follow"}">`);
+    }
   }
   const sitemap = await (await request.get("/sitemap.xml")).text();
   const llms = await (await request.get("/llms.txt")).text();
   const full = await (await request.get("/llms-full.txt")).text();
-  expect(sitemap).not.toContain(route);
-  expect(llms).not.toContain(route);
-  expect(full).not.toContain("Validate every tool call on the server");
-  expect(existsSync(`${process.env.ASSESSMENT_FRONTEND_DIR}/dist${route}.md`)).toBe(false);
+  expect(sitemap.includes(route)).toBe(!pending);
+  expect(llms.includes(route)).toBe(!pending);
+  expect(full.includes(`Source: https://knowyourai.live${route}\n`)).toBe(!pending);
+  expect(existsSync(`${process.env.ASSESSMENT_FRONTEND_DIR}/dist${route}.md`)).toBe(!pending);
   await page.goto(route);
   await expect(page.getByRole("heading", { name: "Validate every tool call on the server", exact: true })).toBeVisible();
-  await expect(page.getByText("Draft, not yet reviewed", { exact: false }).first()).toBeVisible();
+  await expect(page.getByText(pending ? "Draft, not yet reviewed" : "Last reviewed", { exact: false }).first()).toBeVisible();
   await expect(page.locator("#what-happened-in-production + .gd-case-excerpt")).toBeVisible();
   await expect(page.locator(".gd-code-language")).toHaveText(["ts", "python"]);
   const article = await page.locator('script[data-gd-seo]').allTextContents();
@@ -326,4 +333,21 @@ test("checklist works when its browser storage is unavailable", async ({ page })
   await page.getByRole("button", { name: "Running it", exact: true }).click();
   await expect(page.getByRole("button", { name: "Running it", exact: true })).toHaveAttribute("aria-pressed", "true");
   expect(calls).toEqual([]);
+});
+
+test("agent downloads contain only the reviewed rules shown on the page", async ({ page, request }) => {
+  await page.goto("/agent");
+  await expect(page.getByRole("heading", { level: 1, name: "Give your coding agent the reviewed rules", exact: true })).toBeVisible();
+  const files = await Promise.all(["AGENTS.md", "SKILL.md", "knowyourai.mdc"].map(async (name) => {
+    const response = await request.get(`/agent/${name}`);
+    expect(response.ok()).toBeTruthy();
+    const text = await response.text();
+    expect(text).toContain("# AI safety rules (knowyourai.live)");
+    return text.split("\n").filter((line) => line.startsWith("- "));
+  }));
+  expect(files[1]).toEqual(files[0]);
+  expect(files[2]).toEqual(files[0]);
+  await expect(page.locator(".gd-agent-rules li")).toHaveCount(files[0].length);
+  await expect(page.locator(".gd-code-block")).toHaveCount(3);
+  if (!files[0].length) await expect(page.getByText("No reviewed rules are available yet.", { exact: false })).toBeVisible();
 });

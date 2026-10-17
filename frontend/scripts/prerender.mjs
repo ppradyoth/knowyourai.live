@@ -73,6 +73,16 @@ for (const [route, item] of reviewedGuide) {
 }
 writeFileSync(join(dist, "llms-full.txt"), ["# KnowYourAI", ...reviewedGuide.map(([route, item]) =>
   `# ${item.meta.title}\n\nSource: ${site}${route}\n\n${item.body}`)].join("\n\n") + "\n");
+
+const agentDirectory = join(dist, "agent");
+mkdirSync(agentDirectory, { recursive: true });
+const rules = getControls().filter((item) => item.meta.review === "reviewed")
+  .map((item) => `- ${item.meta.agent_rule.replace(/\s+/g, " ").trim()} (${site}/guide/controls/${item.slug})`);
+const agentBody = `# AI safety rules (knowyourai.live)\n\n${rules.join("\n")}\n`;
+const agentDescription = "Use when building or reviewing LLM features, agents, RAG, tool calls and MCP servers.";
+writeFileSync(join(agentDirectory, "AGENTS.md"), agentBody);
+writeFileSync(join(agentDirectory, "SKILL.md"), `---\nname: knowyourai-safe-ai\ndescription: ${agentDescription}\n---\n\n${agentBody}`);
+writeFileSync(join(agentDirectory, "knowyourai.mdc"), `---\ndescription: ${agentDescription}\nalwaysApply: false\n---\n\n${agentBody}`);
 const urls = indexable.map((record) => {
   const updated = content.get(record.route)?.meta.updated;
   return `  <url><loc>${escape(`${site}${record.route}`)}</loc>${updated ? `<lastmod>${escape(updated)}</lastmod>` : ""}</url>`;
