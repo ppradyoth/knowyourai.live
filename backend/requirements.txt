@@ -11,7 +11,7 @@ firebase-admin>=6.0.0
 a2wsgi>=1.10.0
 google-cloud-tasks>=2.0.0
 reportlab>=4.0.0
-pypdf==6.20.0
+pypdf==6.21.2
 
 # Data pipeline
 duckdb>=1.1.0
